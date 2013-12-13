@@ -1,5 +1,6 @@
 
 \documentclass[doc,helv,longtable]{article}
+\usepackage[spanish]{babel}
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{setspace}
@@ -12,8 +13,8 @@
 
 \title{Informe TP Profesional - Invisible.js}
 \maketitle
-Informe TP Profesional - Invisible.jsInforme TP Profesional - Invisible.js\section{Introducción}
 
+\section{Introducción}
 
 A medida que avanzan las aplicaciones web, se pasó progresivamente de arquitecturas en las que todo el procesamiento se hacía del lado del servidor, hacia otras en las que el cliente es cada vez más complejo, al punto de que mucho del trabajo hoy en día lo realiza el browser más que el servidor[1]. Una vez superado el uso de CGI scripts y aplicaciones desestructuradas en lenguajes como PHP y ASP, se estandarizó el uso de frameworks MVC en el servidor, como Rails o Django. Estos se suelen complementar con bibliotecas como JQuery para mejorar la interfaz de usuario y la presentación. 
 
@@ -253,7 +254,7 @@ El objetivo esencial del framework es poder reutilizar código tanto en el servi
 
 \begin{itemize}
 \item  JavaScript en el browser no posee un sistema de módulos, y node.js sí. Por lo tanto, al trabajar con módulos en node, éstos van a ser incompatibles en el browser.  
-\item  Las variables globales difieren. En el cliente, una variable global es asignada al objeto window, y en node.js al objeto global. Además, cada plataforma tiene variables globales específicas, como document, location, history en el caso del cliente, o __dir, proc en el caso del servidor.
+\item  Las variables globales difieren. En el cliente, una variable global es asignada al objeto window, y en node.js al objeto global. Además, cada plataforma tiene variables globales específicas, como document, location, history en el caso del cliente, o \_\_dir, proc en el caso del servidor.
 
 \end{itemize}
 
@@ -302,13 +303,13 @@ La siguiente figura ilustra la intervención de los distintos componentes en la 
 \begin{figure}[tb]
 \begin{center}
 \includegraphics[width=1\columnwidth]{}
-\caption{\subsection{Tercera iteración}
-\subsubsection{Repositorio público}
-
-}
+\caption{Secuencia de llamados para un método en el cliente}
 
 \end{center}
 \end{figure}
+
+\subsection{Tercera iteración}
+\subsubsection{Repositorio público}
 El código fuente se maneja con el sistema de control de versiones distribuido Git[10], a través del sitio Github[11]. Este sitio favorece a sus usuarios en la tarea del desarrollo colaborativo, proveyendo herramientas online para realizar forks y pull requests, reportar bugs, proponer mejoras, etc., siendo el medio estándar para desarrollo del movimiento Open Source en la actualidad. A fin de de habilitar la futura difusión del proyecto, se comenzó a escribir su documentación pública en la portada del proyecto en ese sitio [12]. Se planea extender esta documentación en las iteraciones subsiguientes.
 
 También se registró el proyecto en npm[13], el gestor de paquetes de Node.js, facilitando la instalación del framework en cualquier proyecto Node.js que quiera utilizarlo, siguiendo las prácticas habituales de la comunidad.\subsubsection{Unit Testing e Integración continua}
@@ -353,6 +354,7 @@ Nos interesa entonces proveer alguna manera de definir validaciones en el modelo
 
 Para aplicar validaciones, el usuario del framework debe definir el atributo “validations” que sigue el esquema requerido por revalidator. Luego se extiende el modelo con el método validate, que será llamado antes de salvar el modelo, arrojando un error si el estado no es válido. Por ejemplo:
 
+\begin{verbatim}
 class Person
 
         constructor: (@name)->
@@ -378,7 +380,7 @@ person.validate()
 #returns {valid: false, errors: [{attribute: type, property: #name, expected: string, actual: number, message: must be of string type}]}}
 
 person.save() #throws error\subsubsection{Comunicación en tiempo real}
-
+\end{verbatim}
 
 Uno de los mayores avances de la actualidad en lo que a aplicaciones web se refiere el soporte a comunicación en tiempo real. La biblioteca por excelencia que implementa tiempo real en Node.js se llama socket.io. 
 
@@ -397,7 +399,7 @@ En el caso de que uno quiera agregarle funcionalidad de tiempo real a su aplicac
 
 Un paso a tener en cuenta a la hora de desarrollar cualquier aplicación web es poder llevarla a un ambiente de producción sin mayores problemas. No es lo mismo un entorno local de desarrollo que uno remoto, y puede haber algunas dificultades a sortear. Necesitamos que nuestro framework sea lo suficientemente flexible como para poder adaptarse a las particularidades de cada entorno. En el último tiempo se están popularizando soluciones de Cloud Computing que permiten aumentar los recursos de hardware asignados a la aplicación con solo apretar un botón (y pagando más dinero, obviamente). Una de las soluciones más conocidas y usadas es Heroku[13], que es la plataforma que usamos para desplegar nuestra aplicación de ejemplo. 
 
-Dentro de las particularidades de esta plataforma, hubo que tener en cuenta que usa un servidor externo como base de datos, de modo que es necesario que el que ese parámetro sea configurable en el framework. Nosotros usamos el servicio llamado MongoLab, el cual nos provee la url de la base de datos mediante la variable de entorno MONGOLAB_URI.
+Dentro de las particularidades de esta plataforma, hubo que tener en cuenta que usa un servidor externo como base de datos, de modo que es necesario que el que ese parámetro sea configurable en el framework. Nosotros usamos el servicio llamado MongoLab, el cual nos provee la url de la base de datos mediante la variable de entorno MONGOLAB\_URI.
 
 Otra de las cuestiones a tener en cuenta es que no todas las plataformas tienen soporte a Websockets. Dado que socket.io implementa el soporte a real time de distintas maneras, esto no es un problema, pero es necesario exponer al usuario las configuraciones para que pueda hacer los cambios pertinentes.
 
@@ -405,13 +407,16 @@ En el caso de Heroku, empezó a soportar WebSockets de forma experimental, y se 
 
 heroku labs:enable websockets
 
-La aplicación esta deplegada bajo la siguiente dirección: http://invisible-chat.herokuapp.com/\section{Desarrollo de una aplicación con Invisible.js}
+La aplicación esta deplegada bajo la siguiente dirección: http://invisible-chat.herokuapp.com/
+
+\section{Desarrollo de una aplicación con Invisible.js}
 
 
 Habiendo completado el desarrollo de la funcionalidad propuesta para el framework y una aplicación de ejemplo que lo utiliza, nos interesa evaluar los resultados obtenidos. En particular, cómo resulta la experiencia de desarrollar una aplicación usando Invisible.js. Para ello describiremos paso a paso el proceso para una versión reducida del Chat con el que se trabajó anteriormente.
 
 Lo primero consiste en crear un proyecto node.js, para lo cual hay que crear un archivo llamado package.json el cual contiene la metainformación del proyecto y las dependencias necesarias. El nuestro se verá así:
 
+\begin{verbatim}
 {
 
   ``name'': ``minimalChat'',
@@ -435,11 +440,13 @@ Lo primero consiste en crear un proyecto node.js, para lo cual hay que crear un 
   }
 
 }
+\end{verbatim}
 
 Nótese que todo proyecto necesita tener “invisible” y “express” como dependencias, para que el mismo pueda funcionar.
 
 Ahora podemos crear el servidor express, e integrar invisible. Para ello creamos el archivo server.coffee, el cual contiene la siguiente información:
 
+\begin{verbatim}
 express = require(``express'')
 
 http = require(``http'')
@@ -461,19 +468,23 @@ app.use(express.static(path.join(__dirname, ``public'')))
 invisible.createServer app, path.join(__dirname, ``models''), {} , () ->
 
   console.log ``Express server listening on port '' + app.get(``port'')
+\end{verbatim}
 
 Vemos que podemos crear nuestra aplicación llamando a la función express, y luego realizamos algunas configuraciones, como setear el puerto al cual el servidor escucha, definir que public va a ser la carpeta estática, entre otros.
 
 Lo más importante es la última línea: 
 
+\begin{verbatim}
 invisible.createServer app, path.join(__dirname, ``models''), {} , () ->
 
   console.log ``Express server listening on port '' + app.get(``port'')
+\end{verbatim}
 
 Acá estamos integrando invisible, especificando a su vez la ruta que va a contener nuestros modelos de dominio, en este caso, models. Esta función va a crear un servidor http convencional de node, pero va a agregar todas las configuraciones necesarias para hacer funcionar a Invisible.
 
 Luego se definen los modelos de dominio de la aplicación y se los registra con Invisible.js. Creamos un archivo message.coffee en la carpeta models.
 
+\begin{verbatim}
 Invisible = require(``invisible'')
 
 class Message
@@ -483,6 +494,7 @@ class Message
       @date = new Date()
 
 module.exports = Invisible.createModel(``Message'', Message)
+\end{verbatim}
 
 Con esto basta para resolver la persistencia, autogenerar los controladores REST, publicar en tiempo real los eventos en los modelos. Todas estas tareas se realizarán de manera totalmente transparente para el programador. 
 
@@ -490,6 +502,7 @@ Con los pasos anteriores queda sentada casi en su totalidad la arquitectura de l
 
 La aplicación va a consistir en un único salón en el cual interactúan todos los usuarios, a los cuales se les asigna un nombre al azar. Nuestro código de cliente va a consistir entonces de un archivo index.html y otro app.coffee, ambos bajo el directorio public.
 
+\begin{verbatim}
 <!doctype html>
 
   <head>
@@ -552,15 +565,20 @@ La aplicación va a consistir en un único salón en el cual interactúan todos 
 
   </body>
 
-</html>\section{Este es el archivo principal, el cual contiene las referencias a las distintas bibliotecas usadas. Es particularmente interesante la linea general la integración con Invisible:}
+</html>
+\end{verbatim}
 
+Este es el archivo principal, el cual contiene las referencias a las distintas bibliotecas usadas. Es particularmente interesante la linea general la integración con Invisible:
 
+\begin{verbatim}
 <script src=``invisible.js''></script>
+\end{verbatim}
 
 Solo con eso, todos nuestros modelos van a podes ser utilizados desde el cliente.
 
 Nuestro código Angular se va a limitar a:
 
+\begin{verbatim}
 angular.module(minimalChat, [])
 
 angular.module(minimalChat)
@@ -589,9 +607,10 @@ angular.module(minimalChat)
 
             if message.from != $scope.user
 
-                $scope.messages.push(message)\section{Conclusiones}
+                $scope.messages.push(message)
+\end{verbatim}
 
-
+\section{Conclusiones}
 El presente trabajo resultó fructífero, en primer lugar por habernos dado la posibilidad de estudiar y aplicar tecnologías incipientes que marcan el rumbo del desarrollo web, y también por haber podido llevar adelante el desarrollo integral de un proyecto de software, aplicando los conocimientos adquiridos en el campo académico y profesional, desde una etapa intensa de investigación y evaluación de alternativas hasta un producto final. Vale remarcar a su vez que este producto superó las expectativas iniciales, teniendo valor en sí mismo. Nos interesa, en fin, realizar a modo de conclusión un balance del trabajo realizado y de las posibilidades de extenderlo en adelante.
 
 En primer término hay que destacar que se trabajó sobre un set de tecnologías desarrolladas comunitariamente con un alto dinamismo. Invisible.js propone una forma novedosa de desarrollo de aplicaciones web, pero en cierta medida lo hace combinando distintas herramientas surgidas recientemente y en constante evolución. La contracara de este amplio espectro de recursos disponibles es entrar en un terreno de escasa madurez, en muchos casos teniendo que resolver problemas de proyectos ajenos, que cambian continuamente y no fueron suficientemente probados. Con todo, Invisible.js es producto de esta modalidad de trabajo, y alcanzará su potencial en la medida en que sea difundido y se construya una comunidad que lo sostenga.

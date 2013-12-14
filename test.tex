@@ -1,6 +1,7 @@
 
 \documentclass[doc,helv,longtable]{article}
 \usepackage[spanish]{babel}
+\usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{setspace}
@@ -16,18 +17,18 @@
 
 \section{Introducción}
 
-A medida que avanzan las aplicaciones web, se pasó progresivamente de arquitecturas en las que todo el procesamiento se hacía del lado del servidor, hacia otras en las que el cliente es cada vez más complejo, al punto de que mucho del trabajo hoy en día lo realiza el browser más que el servidor[1]. Una vez superado el uso de CGI scripts y aplicaciones desestructuradas en lenguajes como PHP y ASP, se estandarizó el uso de frameworks MVC en el servidor, como Rails o Django. Estos se suelen complementar con bibliotecas como JQuery para mejorar la interfaz de usuario y la presentación. 
+A medida que avanzan las aplicaciones web, se pasó progresivamente de arquitecturas en las que todo el procesamiento se hacía del lado del servidor, hacia otras en las que el cliente es cada vez más complejo, al punto de que mucho del trabajo hoy en día lo realiza el browser más que el servidor\cite{jsmvcvs}. Una vez superado el uso de CGI scripts y aplicaciones desestructuradas en lenguajes como PHP y ASP, se estandarizó el uso de frameworks MVC en el servidor, como Rails o Django. Estos se suelen complementar con bibliotecas como JQuery para mejorar la interfaz de usuario y la presentación. 
 
-En la medida en que se requerían interfaces “ricas”[32], actualizaciones en tiempo real, etc., aumentaron el tamaño y la complejidad del código del cliente. Se introdujeron entonces herramientas para resolver esta parte del problema[2]: frameworks MVC, como backbone.js[16], para estructurar modelos en el cliente; MVVM, que facilita construir vistas responsivas a eventos, como lo hace knockout.js[17], etc. Todas estas arquitecturas se suelen agrupar como MV*[7].
+En la medida en que se requerían interfaces “ricas”\cite{rich}, actualizaciones en tiempo real, etc., aumentaron el tamaño y la complejidad del código del cliente. Se introdujeron entonces herramientas para resolver esta parte del problema\cite{richjs}: frameworks MVC, como backbone.js\cite{backbone}, para estructurar modelos en el cliente; MVVM, que facilita construir vistas responsivas a eventos, como lo hace knockout.js\cite{knockout}, etc. Todas estas arquitecturas se suelen agrupar como MV*\cite{mvw}.
 
-Es fácil ver el problema de mantener dos estructuras de este estilo en paralelo en el cliente y el servidor. Por ejemplo, el programador tiene que cambiar de lenguaje al pasar de uno a otro, casi forzosamente hay duplicación de comportamiento entre los modelos en cada lado, un trabajo engorroso para manipular el DOM de las páginas para reflejar el estado en el servidor, no siempre se pueden reutilizar las plantillas (templates) con las que se arman las páginas, etc.[3]
+Es fácil ver el problema de mantener dos estructuras de este estilo en paralelo en el cliente y el servidor. Por ejemplo, el programador tiene que cambiar de lenguaje al pasar de uno a otro, casi forzosamente hay duplicación de comportamiento entre los modelos en cada lado, un trabajo engorroso para manipular el DOM de las páginas para reflejar el estado en el servidor, no siempre se pueden reutilizar las plantillas (templates) con las que se arman las páginas, etc.\cite{wdsucks}
 
 De aquí que resulte de interés encontrar la manera, no solo de sincronizar el estado, sino de reutilizar las definiciones de modelo, validaciones, etc., que hoy en día es casi forzoso duplicar. El objetivo de este Trabajo Profesional es construir una plataforma sobre la que el programador pueda solucionar esos problemas, reduciendo al mínimo la distinción que debe hacer entre el código de cliente y el de servidor. Una serie de recientes desarrollos hacen viable acercar esta meta, cuando no alcanzarla por completo. Es deseable:
 
 
 \begin{itemize}
-\item  Definir una sola vez modelos, validaciones, métodos y consultas a la base de datos, y poder usarlos indistintamente en cliente y servidor. Usando node.js[4] se puede programar en JavaScript como lenguaje en el servidor, permitiendo reusar el código; a su vez, con CoffeeScript[6] se puede alcanzar un nivel de expresividad similar al de lenguajes “tradicionales” de backend como Ruby o Python.
-\item  Automatizar la actualización de la vista de acuerdo al estado de los datos, sean estos modificados en la vista por cualquier usuario o en el backend. Es decir, se ha de lograr una bidireccionalidad en la comunicación entre cliente y servidor (que el servidor pueda enviar información que no responda a ningún request); este problema se puede resolver con websockets[5].
+\item  Definir una sola vez modelos, validaciones, métodos y consultas a la base de datos, y poder usarlos indistintamente en cliente y servidor. Usando node.js\cite{node} se puede programar en JavaScript como lenguaje en el servidor, permitiendo reusar el código; a su vez, con CoffeeScript\cite{coffee} se puede alcanzar un nivel de expresividad similar al de lenguajes “tradicionales” de backend como Ruby o Python.
+\item  Automatizar la actualización de la vista de acuerdo al estado de los datos, sean estos modificados en la vista por cualquier usuario o en el backend. Es decir, se ha de lograr una bidireccionalidad en la comunicación entre cliente y servidor (que el servidor pueda enviar información que no responda a ningún request); este problema se puede resolver con websockets\cite{websockets}.
 \item  Definir los templates de las páginas una sola vez, pudiendo precargarlas en el servidor al entrar en una url específica, o actualizarlas arbitrariamente desde el cliente.
 
 \end{itemize}
@@ -47,36 +48,35 @@ De acuerdo a los resultados de este proceso, el resto del trabajo consistirá en
 \subsection{CoffeeScript}
 
 
-Por la naturaleza del trabajo propuesto, necesariamente se va a utilizar como lenguaje JavaScript en una medida importante; esto se debe a que es el único lenguaje que por ahora interpretan los navegadores web. Esto plantea un problema, ya que JavaScript excedió por completo su motivación original y adolece de varios problemas de diseño[1]. Esta situación se puede atenuar restringiendose a un subconjunto del lenguaje, que evite en la medida de lo posible sus aspectos problemáticos.
+Por la naturaleza del trabajo propuesto, necesariamente se va a utilizar como lenguaje JavaScript en una medida importante; esto se debe a que es el único lenguaje que por ahora interpretan los navegadores web. Esto plantea un problema, ya que JavaScript excedió por completo su motivación original y adolece de varios problemas de diseño\cite{goodparts}. Esta situación se puede atenuar restringiendose a un subconjunto del lenguaje, que evite en la medida de lo posible sus aspectos problemáticos.
 
-CoffeeScript[2] es un lenguaje que compila a JavaScript (siguiendo fuertes convenciones de buenas prácticas para este lenguaje) y que pretende ocultar muchos de los inconvenientes de diseño mencionados, a la vez que presenta una sintaxis más expresiva (cercana a Python o Ruby). Todo esto lo convierte en una opción interesante, pero hay que sopesar las desventajas que acarrea: 
+CoffeeScript es un lenguaje que compila a JavaScript (siguiendo fuertes convenciones de buenas prácticas para este lenguaje) y que pretende ocultar muchos de los inconvenientes de diseño mencionados, a la vez que presenta una sintaxis más expresiva (cercana a Python o Ruby). Todo esto lo convierte en una opción interesante, pero hay que sopesar las desventajas que acarrea: 
 \begin{itemize}
-\item  Como los browsers no interpretan CoffeeScript, el código escrito en este lenguaje que sea usado en el cliente tiene que ser previamente compilado a JavaScript. De esta forma  se agrega un paso adicional al ciclo de desarrollo. Sin embargo, hoy en día existen varias herramientas que facilitan los procesos de desarrollo, como Grunt[31] y Brunch[32].
-\item  El código que se ejecuta finalmente es JavaScript, por lo tanto a la hora de debuggear, no va a estar disponible el código original sino el compilado. Este problema se puede solucionar con la utilización de Source Maps[30].
+\item  Como los browsers no interpretan CoffeeScript, el código escrito en este lenguaje que sea usado en el cliente tiene que ser previamente compilado a JavaScript. De esta forma  se agrega un paso adicional al ciclo de desarrollo. Sin embargo, hoy en día existen varias herramientas que facilitan los procesos de desarrollo, como Grunt\cite{grunt}.
+\item  El código que se ejecuta finalmente es JavaScript, por lo tanto a la hora de debuggear, no va a estar disponible el código original sino el compilado. Este problema se puede solucionar con la utilización de Source Maps\cite{sourcemaps}.
 \item  Podría resultar una mala decisión de diseño para una plataforma el imponer el uso de un lenguaje no convencional. 
 
 \end{itemize}
+
 \subsection{Comunicación Servidor-cliente}
+El protocolo HTTP tiene una arquitectura Cliente-Servidor. Esto es, el método de funcionamiento es que el Cliente hace un pedido (request), el Servidor lo recibe y procesa, y envía una respuesta (response) al Cliente. Sin embargo, en tanto las aplicaciones web se complejizaron y sobre todo, con la difusión de los requests asincrónicos como medio para dinamizarlas, pasó a ser una necesidad el que el servidor envíe información hacia el cliente, sin que ésta sea una respuesta a un pedido. Esto permite implementar desde pequeñas notificaciones hasta complejas aplicaciones de tiempo real. Como se trata de un uso para el que el protocolo no estaba preparado, no hay aún una forma estándar de implementarlo, si bien existen soluciones parciales o aún en desarrollo para hacerlo\cite{wsvssse}.
 
+Como el presente trabajo se propone desarrollar una plataforma en la que el programador pueda desentenderse de la diferencia entre cliente y servidor, se hace necesario que implemente la comunicación Servidor-Cliente en forma transparente al código de aplicación. Nótese que no es el objetivo del proyecto encontrar una solución general o ideal para este problema, si no aplicar las ya disponibles de la manera más simple para obtener el efecto deseado.
 
-El protocolo HTTP tiene una arquitectura Cliente-Servidor. Esto es, el método de funcionamiento es que el Cliente hace un pedido (request), el Servidor lo recibe y procesa, y envía una respuesta (response) al Cliente. Sin embargo, en tanto las aplicaciones web se complejizaron y sobre todo, con la difusión de los requests asincrónicos como medio para dinamizarlas, pasó a ser una necesidad el que el servidor envíe información hacia el cliente, sin que ésta sea una respuesta a un pedido. Esto permite implementar desde pequeñas notificaciones hasta complejas aplicaciones de tiempo real. Como se trata de un uso para el que el protocolo no estaba preparado, no hay aún una forma estándar de implementarlo, si bien existen soluciones parciales o aún en desarrollo para hacerlo [4].
+\subsubsection{Long-polling}
+Long-Polling o Server Push\cite{longpolling} son nombres que se le dan comúnmente a la técnica de simular el envío de información desde el servidor al cliente que consiste en que el Cliente envíe un request asincrónico al Servidor, y que éste retenga la respuesta abierta hasta que tenga información que enviar. Se trata de un método ineficiente e inelegante, si bien la única opción disponible hasta hace poco.
 
-Como el presente trabajo se propone desarrollar una plataforma en la que el programador pueda desentenderse de la diferencia entre cliente y servidor, se hace necesario que implemente la comunicación Servidor-Cliente en forma transparente al código de aplicación. Nótese que no es el objetivo del proyecto encontrar una solución general o ideal para este problema, si no aplicar las ya disponibles de la manera más simple para obtener el efecto deseado.\subsubsection{Long-polling}
+\subsubsection{WebSockets}
+La especificación de WebSockets presenta una API para establecer conexiones bidireccionales entre servidor y cliente, mucho más eficientes que las de HTTP\cite{websockets}. Es una tecnología de desarrollo reciente, y aún no está soportada por todos los browsers, y, al utilizar un protocolo distinto a HTTP, requiere mayor configuración y software específico en el servidor.
 
+\subsubsection{Server-Sent Events}
+Los Server-Sent Events\cite{sse} son otra tecnología que soporta el envío de información desde el Servidor al Cliente. Funcionan sobre HTTP, por lo que no tienen requerimientos especiales sobre los servidores, y su utilización resulta más simple que la de WebSockets\cite{congress}\cite{wsvssse2}. A diferencia de estos, no proveen comunicación bidireccional, es decir, es un canal para que el servidor envíe datos al cliente y no viceversa. Esto no es un gran problema, puesto que se pueden usar request tradicionales para la otra dirección, si bien con un costo mayor de recursos\cite{ssedownside}.
 
-Long-Polling o Server Push[5] son nombres que se le dan comúnmente a la técnica de simular el envío de información desde el servidor al cliente que consiste en que el Cliente envíe un request asincrónico al Servidor, y que éste retenga la respuesta abierta hasta que tenga información que enviar. Se trata de un método ineficiente e inelegante, si bien la única opción disponible hasta hace poco.\subsubsection{WebSockets}
+\subsubsection{socket.io}
+socket.io\cite{socketio} es una biblioteca escrita en JavaScript, que provee una interfaz para comunicación bidireccional entre cliente y servidor, similar a la de WebSockets, y que puede variar la tecnología que usa para implementarla de acuerdo a las capacidades del navegador (por ejemplo, usar Long-Polling si éste no soporta WebSockets). Se trata de una opción ideal para resolver el problema en cuestión, con la salvedad de que es una biblioteca que requiere el uso de node.js, lo cual complejiza la configuración en los casos en que la aplicación utilice otra tecnología en el Servidor. Esto probablemente no sea un impedimento para este trabajo, puesto que implementar el Servidor con node.js es la única manera de poder usar el mismo lenguaje en Cliente y Servidor.
 
-
-La especificación de WebSockets presenta una API para establecer conexiones bidireccionales entre servidor y cliente, mucho más eficientes que las de HTTP[11]. Es una tecnología de desarrollo reciente, y aún no está soportada por todos los browsers, y, al utilizar un protocolo distinto a HTTP, requiere mayor configuración y software específico en el servidor. \subsubsection{Server-Sent Events}
-
-
-Los Server-Sent Events[7] son otra tecnología que soporta el envío de información desde el Servidor al Cliente. Funcionan sobre HTTP, por lo que no tienen requerimientos especiales sobre los servidores, y su utilización resulta más simple que la de WebSockets[8][9]. A diferencia de estos, no proveen comunicación bidireccional, es decir, es un canal para que el servidor envíe datos al cliente y no viceversa. Esto no es un gran problema, puesto que se pueden usar request tradicionales para la otra dirección, si bien con un costo mayor de recursos [10].\subsubsection{socket.io}
-
-
-socket.io[6] es una biblioteca escrita en JavaScript, que provee una interfaz para comunicación bidireccional entre cliente y servidor, similar a la de WebSockets, y que puede variar la tecnología que usa para implementarla de acuerdo a las capacidades del navegador (por ejemplo, usar Long-Polling si éste no soporta WebSockets). Se trata de una opción ideal para resolver el problema en cuestión, con la salvedad de que es una biblioteca que requiere el uso de node.js, lo cual complejiza la configuración en los casos en que la aplicación utilice otra tecnología en el Servidor. Esto probablemente no sea un impedimento para este trabajo, puesto que implementar el Servidor con node.js es la única manera de poder usar el mismo lenguaje en Cliente y Servidor.\subsection{REST y ROA}
-
-
-REST (Representational State Transfer) es un conjunto de principios y restricciones para construir servicios y, en menor medida, aplicaciones web, cuyo objetivo principal es el de respetar las características de diseño del protocolo HTTP, a fin de lograr arquitecturas uniformes, predecibles y claras, que funcionen de la misma forma que los sitios web. ROA (Resource Oriented Architecture) es una arquitectura particular, que garantiza producir aplicaciones REST[3].
+\subsection{REST y ROA}
+REST (Representational State Transfer) es un conjunto de principios y restricciones para construir servicios y, en menor medida, aplicaciones web, cuyo objetivo principal es el de respetar las características de diseño del protocolo HTTP, a fin de lograr arquitecturas uniformes, predecibles y claras, que funcionen de la misma forma que los sitios web. ROA (Resource Oriented Architecture) es una arquitectura particular, que garantiza producir aplicaciones REST\cite{rest}.
 
 La arquitectura ROA propone descomponer la aplicación en recursos: cualquier elemento o información de interés. Luego se siguen ciertos principios para exponer y manipular esos recursos:
 \begin{itemize}
@@ -87,10 +87,9 @@ La arquitectura ROA propone descomponer la aplicación en recursos: cualquier el
 
 \end{itemize}
 
+Además de proveer una manera consistente de estructurar las aplicaciones, usar REST y ROA tiene la ventaja de que muchos frameworks proveen facilidades automáticas para aplicaciones que respetan estos esquemas (por ejemplo, definiendo los recursos, automáticamente se tiene la interfaz para exponerlos y manipularlos). Los objetivos que se plantea el presente trabajo son en cierta medida incompatibles con los de REST, puesto que se propone diluir la distinción entre Cliente y Servidor, fundamental del protocolo HTTP, y que a su vez difícilmente se pueda implementar con arquitecturas “sin estado”. Aún así nos parece útil considerar los principios de REST y ROA como marco de referencia para estructurar aplicaciones, y respetarlos en los casos en que sea pertinente.
 
-Además de proveer una manera consistente de estructurar las aplicaciones, usar REST y ROA tiene la ventaja de que muchos frameworks proveen facilidades automáticas para aplicaciones que respetan estos esquemas (por ejemplo, definiendo los recursos, automáticamente se tiene la interfaz para exponerlos y manipularlos). Los objetivos que se plantea el presente trabajo son en cierta medida incompatibles con los de REST, puesto que se propone diluir la distinción entre Cliente y Servidor, fundamental del protocolo HTTP, y que a su vez difícilmente se pueda implementar con arquitecturas “sin estado”. Aún así nos parece útil considerar los principios de REST y ROA como marco de referencia para estructurar aplicaciones, y respetarlos en los casos en que sea pertinente.\subsection{Templates}
-
-
+\subsection{Templates}
 Un sistema de templates o plantillas es un programa que aplica un set de datos a una plantilla definida en un lenguaje, para producir un documento. En el contexto de las aplicaciones web se suele utilizar para producir páginas web en forma dinámica, con el contenido de una base de datos[12]. Los primeros sistemas de templates usaban el propio lenguaje de aplicación para definir las plantillas (como PHP o JSP para Java), lo que redundaba en código ilegible y difícil de mantener, por lo que incentivo enfoques con sintaxis específica más limitada, a fin de mantener la lógica de negocio separada de la presentación [13][14].
 
 En las aplicaciones tradicionales de Cliente-Servidor, el Cliente realiza un pedido, el Servidor realiza el procesamiento necesario y aplica el sistema de templates para generar la página de respuesta. Al pasar a aplicaciones que se actualizan parcialmente, haciendo uso intensivo de pedidos asincrónicos a través de JavaScript (AJAX), se plantea un problema para generar la presentación de los datos (generalmente una parte de la página que generaría un request tradicional). Las potenciales soluciones son:
@@ -125,23 +124,23 @@ Node.js[24] es una plataforma para crear aplicaciones, eminentemente servidores 
 
 La filosofía de desarrollo de Node.js, y por extensión de las aplicaciones que lo utilizan, es la de construir núcleos pequeños y complementarlos con módulos poco acoplados[28]. Dicha filosofía es incentivada por un eficiente gestor de paquetes, npm[29]. A su vez, es una de las tecnologías más populares en la actualidad[34], con una comunidad dinámica, por lo que la mayoría de los avances en aplicaciones web suelen desarrollarse para Node.js. socket.io[6] es un ejemplo de esto. Este esquema favorece al presente trabajo, en tanto sería viable utilizar módulos ya existentes para resolver los problemas más comunes y escribir otros específicos para alcanzar los objetivos planteados. 
 
-Los frameworks o bibliotecas con motivaciones similares a la del presente trabajo, están desarrollados en Node.js, si bien en su mayoría no están todavía en condiciones de ser usados en producción[35][36].\subsubsection{Express}
+Los frameworks o bibliotecas con motivaciones similares a la del presente trabajo, están desarrollados en Node.js, si bien en su mayoría no están todavía en condiciones de ser usados en producción[35][36].
 
+\subsubsection{Express}
+Express[37] es un framework web minimalista, de los más populares y robustos de Node.js.  Express es impone pocas restricciones y deja la mayoría de las decisiones (y su implementación) al programador[35]. Esto lo hace muy flexible, acoplándose bien a la filosofía descrita anteriormente: existen muchos módulos para extender su funcionalidad básica. De esta forma, una buena forma de construir una plataforma web para Node.js es partir de Express y extenderlo con un set de módulos independientes; así lo hacen Derby y Tower.js[47].
 
-Express[37] es un framework web minimalista, de los más populares y robustos de Node.js.  Express es impone pocas restricciones y deja la mayoría de las decisiones (y su implementación) al programador[35]. Esto lo hace muy flexible, acoplándose bien a la filosofía descrita anteriormente: existen muchos módulos para extender su funcionalidad básica. De esta forma, una buena forma de construir una plataforma web para Node.js es partir de Express y extenderlo con un set de módulos independientes; así lo hacen Derby y Tower.js[47].\subsubsection{Derby y Meteor}
-
-
+\subsubsection{Derby y Meteor}
 Derby es un framework para construir aplicaciones en tiempo real, que funcionen tanto en el browser como en Node.js. Se propone como una solución al desorden acarreado al agregar dinamismo a aplicaciones clásicas MVC, y la duplicación implícita al incluir una estructura MVC en cliente[58]. La documentación y el grado de desarrollo del proyecto son limitados[35].
 
 Meteor[59] tiene muchos puntos en común con Derby, si bien con un enfoque distinto: mientras que Derby hace hincapié en las aplicaciones en tiempo real, Meteor busca ser una plataforma de uso general, aplicable a la mayoría de los sitios en la web[60]. Otras diferencias son que tiene más exposición y mayor documentación que Derby[61] y una tendencia a ser una plataforma cerrada[62].
 
-En ambos frameworks los objetivos coinciden al menos parcialmente con los de este trabajo, si bien son más amplios, tratándose de soluciones complejas que abarcan todas las capas del desarrollo. En este sentido, vemos difícil trabajar sobre ellos para el presente trabajo, dado lo acotado de su alcance.\subsubsection{Flatiron}
+En ambos frameworks los objetivos coinciden al menos parcialmente con los de este trabajo, si bien son más amplios, tratándose de soluciones complejas que abarcan todas las capas del desarrollo. En este sentido, vemos difícil trabajar sobre ellos para el presente trabajo, dado lo acotado de su alcance.
 
+\subsubsection{Flatiron}
+Flatiron[38] es un framework web, formado por un conjunto de componentes independientes y opcionales, a fin de proveer soluciones en todos los aspectos del desarrollo, sin perder flexibilidad[39]. Si bien es mucho menos popular que los anteriores, su filosofía y motivaciones lo hacen un caso de estudio interesante. Por un lado, se armó llevando el extremo la idea de construir aplicaciones en base a pequeños núcleos extendidos mediante módulos poco acoplados[28], y por otro, sus autores lo presentan como propicio para implementar un patrón de arquitectura superador del MVC, que permite reusar el código en el servidor y el cliente[40]. 
 
-Flatiron[38] es un framework web, formado por un conjunto de componentes independientes y opcionales, a fin de proveer soluciones en todos los aspectos del desarrollo, sin perder flexibilidad[39]. Si bien es mucho menos popular que los anteriores, su filosofía y motivaciones lo hacen un caso de estudio interesante. Por un lado, se armó llevando el extremo la idea de construir aplicaciones en base a pequeños núcleos extendidos mediante módulos poco acoplados[28], y por otro, sus autores lo presentan como propicio para implementar un patrón de arquitectura superador del MVC, que permite reusar el código en el servidor y el cliente[40]. \subsection{Frameworks JavaScript}
+\subsection{Frameworks JavaScript}
 \subsubsection{Backbone.js}
-
-
 Backbone.js[41] es un framework JavaScript que permite estructurar el código de clientes web para seguir una arquitectura MVC, evitando el código poco mantenible que suele surgir si sólo se realiza manipulación del DOM a través de bibliotecas como JQuery. Los conceptos básicos de Backbone son[43]:
 \begin{itemize}
 \item  Modelos: son objetos que contienen datos y su lógica asociada. Se crean extendiendo un modelo de Backbone que provee “ganchos” para acceder atributos, asociar el modelo a eventos y sincronizar con el servidor.
@@ -153,9 +152,9 @@ Backbone.js[41] es un framework JavaScript que permite estructurar el código de
 \end{itemize}
 
 
-Backbone.js fue uno de los primeros frameworks que propuso una solución para realizar código mantenible en el cliente, y ganó popularidad al punto de convertirse casi en un estándar. Sin embargo, ofrece principalmente una estructura y convenciones, pero casi todas las implementaciones las sigue realizando el usuario, es decir, no resuelve la mayoría de los problemas recurrentes en aplicaciones ricas, por ejemplo la sincronización entre modelos y elementos del DOM. En la actualidad, existen alternativas más completas [42].\subsubsection{Knockout}
+Backbone.js fue uno de los primeros frameworks que propuso una solución para realizar código mantenible en el cliente, y ganó popularidad al punto de convertirse casi en un estándar. Sin embargo, ofrece principalmente una estructura y convenciones, pero casi todas las implementaciones las sigue realizando el usuario, es decir, no resuelve la mayoría de los problemas recurrentes en aplicaciones ricas, por ejemplo la sincronización entre modelos y elementos del DOM. En la actualidad, existen alternativas más completas [42].
 
-
+\subsubsection{Knockout}
 Knockout[44] es una biblioteca de Javascript para el cliente, cuyo objetivo principal es soportar two way bindings, que se podría traducir como “ligadura bidireccional”. La ligadura bidireccional consiste en proveer una sincronización entre objetos del DOM y Tipos Abstractos de Datos del lenguaje de programación, en este caso, Javascript. 
 
 Por ejemplo, si uno creará una aplicación web que se encarga de realizar operaciones de ABM sobre una lista de tareas, si uno quisiera mostrar la cantidad de tareas pendientes en forma dinámica, probablemente usaría la biblioteca más popular del momento, Jquery, y para hacerlo tendría que contar la cantidad de filas que tiene la lista, es decir, la cantidad de atributos <tr> de HTML, en vez de pensar a nivel de objetos, en este caso, de tareas. Cada vez que cambie la cantidad de tareas, se tendría que actualizar manualmente este número. Con Knockout en cambio, se puede definir declarativamente que se quiere mostrar el número de tareas, y la biblioteca se va a encargar de actualizar este número automáticamente en el momento que la lista cambie. 
@@ -164,19 +163,19 @@ De esta manera, el programador se desliga de mantener el DOM sincronizado con re
 
 La forma que se define una ligadura entre un elemento de HTML y un objeto de javascript es definiéndolo con un atributo no estándar en el elemento HTML. Además, el objeto javascript tiene que estar contenido dentro de un View Model, y se le tiene que aplicar una función observable, para indicarle a la biblioteca que se tienen que observar cambios sobre el objeto.
 
-Una particularidad de esta biblioteca sobre otras soluciones similares consiste en que se puede utilizar en la medida que uno lo desee, ya sea para resolver un problema en particular como una herramienta integral en toda la aplicación. La biblioteca se utiliza a menudo a la par de Jquery. \subsubsection{AngularJS}
+Una particularidad de esta biblioteca sobre otras soluciones similares consiste en que se puede utilizar en la medida que uno lo desee, ya sea para resolver un problema en particular como una herramienta integral en toda la aplicación. La biblioteca se utiliza a menudo a la par de Jquery. 
 
-
+\subsubsection{AngularJS}
 AngularJS[45] es, a diferencia de algunas de las soluciones descritas anteriormente, es un framework MVVM que permite extender su funcionalidad adaptándose mejor a la aplicación a programar. 
 
 Consiste en extender el lenguaje HTML creando sus propias ‘directivas’[56], que serán interpretados por el motor propio de Angular produciendo una página web dinámica. Además, el programador puede crear sus propias directivas como componentes y atributos HTML.
 
 AngularJS además provee controladores, sobre los cuales se pueden definir objetos de JavaScript que serán observados para conseguir el llamado two way binding. A diferencia de otras soluciones MVVM, como Ember o Knockout, los objetos observados por Angular no requieren implementar ninguna interfaz, seguir una convención, o heredar de algun modelo especial. Esto lo convierte en un buen candidato para utilizar junto a nuestra solución, dado que no hay que hacer una adaptación especial para que nuestros modelos puedan funcionar. 
 
-Actualmente es probablemente el framework JS más popular, tomando como medida la cantidad de preguntas hechas en Stackoverflow[53][54][55], y la cantidad de ‘stars’ en sus respectivos proyectos en Github[34].\section{Prototipos}
+Actualmente es probablemente el framework JS más popular, tomando como medida la cantidad de preguntas hechas en Stackoverflow[53][54][55], y la cantidad de ‘stars’ en sus respectivos proyectos en Github[34].
+
+\section{Prototipos}
 \subsection{REST + SSE + Handlebars}
-
-
 El prototipo[19] consiste en un feed en tiempo real. Los usuarios pueden enviar textos cortos que se actualizan automáticamente para todos los usuarios, sin la necesidad de refrescar la página. Se eligió este tipo de aplicación por ser un caso simple en que se encuentran varios de los problemas que pretenden resolver las tecnologías en estudio: actualizaciones en tiempo real desde el servidor, elementos de la presentación que se deben modificar sin recargar la página. La aplicación se estructuró como una API REST, usando el framework Python Flask[20] en el servidor; se lo eligió por ser simple y de rápida configuración. 
 
 Para la comunicación Servidor-Cliente, se utilizaron Server-Sent Events, y el patrón Publish-Subscribe[21] en el servidor, a través de Redis[22]. La implementación de los SSE demostró ser trivial, por lo que se confirmó como una buena alternativa para resolver la comunicación bidireccional, al menos en tanto no se quiera utilizar una biblioteca más amplia como socket.io.
@@ -642,96 +641,101 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 \item  MVVM: Model-View-ViewModel. Derivativo del patrón MVC, que facilita el desarrollo de interfaces gráficas responsivas a eventos.
 
 \end{itemize}
-\section{Referencias}
 
+\begin{thebibliography}{150}
 
-[1] Javascript MVC, Client vs. Server. https://docs.google.com/presentation/d/1K4RY_1dOi2o_0RBPTr05WL0Vr9E28rRJsnbUP23D6hc/edit#slide=id.gf37f796_147_0
+\bibitem{jsmvcvs}
+  \emph{JavaScript MVC: Client vs Server}.
+  \url{https://docs.google.com/presentation/d/1K4RY_1dOi2o_0RBPTr05WL0Vr9E28rRJsnbUP23D6hc/edit#slide=id.gf37f796\_147\_0}
 
-[2] Rich Javascript Applications: The Seven Frameworks. http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/
+\bibitem{rich}
+  \emph{Rich Internet Application}.
+  \url{http://en.wikipedia.org/wiki/Rich_Internet_application}
 
-[3] Today web development sucks. http://harry.me/2011/01/27/today-web-development-sucks/
+\bibitem{richjs}
+  Steven Sanderson,
+  \emph{Rich Javascript Applications: The Seven Frameworks}.
+  \url{http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/}
 
-[4] http://nodejs.org/
+\bibitem{backbone}
+  \emph{Backbone.js}.
+  \url{http://backbonejs.org/}
 
-[5] http://en.wikipedia.org/wiki/WebSocket
+\bibitem{knockout}
+  \emph{Knockout}.
+  \url{http://knockoutjs.com/}
 
-[6] http://coffeescript.org/
+\bibitem{mvw}
+  Addy Osmani,
+  \emph{Journey Through The JavaScript MVC Jungle}.
+  \url{http://coding.smashingmagazine.com/2012/07/27/journey-through-the-javascript-mvc-jungle/}
 
-[7] Journey Through The JavaScript MVC Jungle. http://coding.smashingmagazine.com/2012/07/27/journey-through-the-javascript-mvc-jungle/
+\bibitem{wdsucks}
+  Harry Brundage,
+  \emph{Today, web development sucks}.
+  \url{http://harry.me/blog/2011/01/27/today-web-development-sucks/}
 
-[8] Scaling isomorphic JavaScript code. http://blog.nodejitsu.com/scaling-isomorphic-javascript-code
+\bibitem{node}
+  \emph{Node.js}.
+  \url{http://nodejs.org/}
 
-[9] http://derbyjs.com/
+\bibitem{coffee}
+  \emph{CoffeeScript}.
+  \url{http://coffeescript.org/}
 
-[10] http://www.meteor.com/
+\bibitem{websockets}
+  Malte Ubl and Eiji Kitamura,
+  \emph{Introducing WebSockets: Bringing Sockets to the Web}.
+  \url{http://www.html5rocks.com/en/tutorials/websockets/basics/}
 
-[11] http://www.eclipse.org/
+\bibitem{goodparts}
+  Douglas Crockford,
+  \emph{JavaScript: The Good Parts}.
 
-[12] http://www.vim.org/
+\bibitem{grunt}
+  \emph{Grunt}.
+  \url{http://gruntjs.com/}
 
-[13] http://python.org/
+\bibitem{sourcemaps}
+  Ryan Seddon,
+  \emph{Introduction to JavaScript Source Maps}.
+  \url{http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/}
 
-[14] http://jquery.com/
+\bibitem{wsvssse}
+  Dmitry Sheiko,
+  \emph{WebSockets vs Server-Sent Events vs Long-polling}.
+  \url{http://dsheiko.com/weblog/websockets-vs-sse-vs-long-polling}
 
-[15] http://expressjs.com/
+\bibitem{longpolling}
+  \emph{Push technology}.
+  \url{http://en.wikipedia.org/wiki/Push_technology}
 
-[16] http://backbonejs.org/
+\bibitem{sse}
+  Eric Bidelman,
+  \emph{Stream Updates with Server-Sent Events}.
+  \url{http://www.html5rocks.com/en/tutorials/eventsource/basics/}
 
-[17] http://knockoutjs.com/
+\bibitem{congress}
+  Luigi Montanez,
+  \emph{Case Study: Real-time Updates in Stream Congress}.
+  \url{http://www.html5rocks.com/en/tutorials/casestudies/sunlight_streamcongress/}
 
-[18] http://angularjs.org/
+\bibitem{wsvssse2}
+  \emph{WebSockets vs. Server-Sent events/EventSource}.
+  \url{http://stackoverflow.com/questions/5195452/websockets-vs-server-sent-events-eventsource}
 
-[19] http://mustache.github.com/
+\bibitem{ssedownside}
+  \emph{Downside of using Server-Sent events for bidirectional client-server communication (instead of WebSockets)}.
+  \url{http://stackoverflow.com/questions/13278365/downside-of-using-server-sent-events-for-bidirectional-client-server-communicati}
 
-[20] https://www.djangoproject.com/
+\bibitem{socketio}
+  \emph{Socket.IO}.
+  \url{http://socket.io/}
 
-[21] http://nginx.org/
+\bibitem{rest}
+  Leonard Richardson & Sam Ruby
+  \emph{RESTful Web Services}.
 
-[22] http://gunicorn.org/
-
-[23] http://www.mysql.com/
-
-[24] http://www.mongodb.org/
-
-[25] http://socket.io/
-
-[26] http://redis.io/
-
-[27] http://git-scm.com/
-
-[28] https://github.com/
-
-[29] http://www.latex-project.org/
-
-[30] http://projects.gnome.org/dia/
-
-[31] http://rubyonrails.org/
-
-[32] http://en.wikipedia.org/wiki/Rich_Internet_application
-
-[33] http://en.wikipedia.org/wiki/Extreme_programming
-
-[1] JavaScript: The Good Parts, Douglas Crockford.
-
-[2] http://coffeescript.org/
-
-[3] RESTful Web Services, Leonard Richardson & Sam Ruby.
-
-[4] http://dsheiko.com/weblog/websockets-vs-sse-vs-long-polling
-
-[5] http://en.wikipedia.org/wiki/Push_technology
-
-[6] http://socket.io/
-
-[7] http://www.html5rocks.com/en/tutorials/eventsource/basics/
-
-[8] http://www.html5rocks.com/en/tutorials/casestudies/sunlight_streamcongress/
-
-[9] http://stackoverflow.com/questions/5195452/websockets-vs-server-sent-events-eventsource
-
-[10] http://stackoverflow.com/questions/13278365/downside-of-using-server-sent-events-for-bidirectional-client-server-communicati 
-
-[11] http://www.html5rocks.com/en/tutorials/websockets/basics/
 
 [12] http://en.wikipedia.org/wiki/Web_template_system
 
@@ -757,8 +761,6 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 
 [23] http://handlebarsjs.com/
 
-[24] http://nodejs.org/
-
 [25] http://blog.nodejitsu.com/node-for-normals
 
 [26] http://debuggable.com/posts/understanding-node-js:4bd98440-45e4-4a9a-8ef7-0f7ecbdd56cb
@@ -769,11 +771,8 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 
 [29] https://npmjs.org/
 
-[30] http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 
-[31] http://gruntjs.com/
 
-[32] http://brunch.io/
 
 [33] http://es.wikipedia.org/wiki/Lenguaje_espec%C3%ADfico_del_dominio
 
@@ -870,5 +869,7 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 [16] Grunt, http://gruntjs.com/
 
 [17] Travis, https://travis-ci.org/
+
+\end{thebibliography}
 
 \end{document}

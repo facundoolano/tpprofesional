@@ -15,6 +15,8 @@
 \title{Informe TP Profesional - Invisible.js}
 \maketitle
 
+\tableofcontents
+
 \section{Introducción}
 
 A medida que avanzan las aplicaciones web, se pasó progresivamente de arquitecturas en las que todo el procesamiento se hacía del lado del servidor, hacia otras en las que el cliente es cada vez más complejo, al punto de que mucho del trabajo hoy en día lo realiza el browser más que el servidor\cite{jsmvcvs}. Una vez superado el uso de CGI scripts y aplicaciones desestructuradas en lenguajes como PHP y ASP, se estandarizó el uso de frameworks MVC en el servidor, como Rails o Django. Estos se suelen complementar con bibliotecas como JQuery para mejorar la interfaz de usuario y la presentación. 
@@ -90,21 +92,21 @@ La arquitectura ROA propone descomponer la aplicación en recursos: cualquier el
 Además de proveer una manera consistente de estructurar las aplicaciones, usar REST y ROA tiene la ventaja de que muchos frameworks proveen facilidades automáticas para aplicaciones que respetan estos esquemas (por ejemplo, definiendo los recursos, automáticamente se tiene la interfaz para exponerlos y manipularlos). Los objetivos que se plantea el presente trabajo son en cierta medida incompatibles con los de REST, puesto que se propone diluir la distinción entre Cliente y Servidor, fundamental del protocolo HTTP, y que a su vez difícilmente se pueda implementar con arquitecturas “sin estado”. Aún así nos parece útil considerar los principios de REST y ROA como marco de referencia para estructurar aplicaciones, y respetarlos en los casos en que sea pertinente.
 
 \subsection{Templates}
-Un sistema de templates o plantillas es un programa que aplica un set de datos a una plantilla definida en un lenguaje, para producir un documento. En el contexto de las aplicaciones web se suele utilizar para producir páginas web en forma dinámica, con el contenido de una base de datos[12]. Los primeros sistemas de templates usaban el propio lenguaje de aplicación para definir las plantillas (como PHP o JSP para Java), lo que redundaba en código ilegible y difícil de mantener, por lo que incentivo enfoques con sintaxis específica más limitada, a fin de mantener la lógica de negocio separada de la presentación [13][14].
+Un sistema de templates o plantillas es un programa que aplica un set de datos a una plantilla definida en un lenguaje, para producir un documento. En el contexto de las aplicaciones web se suele utilizar para producir páginas web en forma dinámica, con el contenido de una base de datos\cite{template}. Los primeros sistemas de templates usaban el propio lenguaje de aplicación para definir las plantillas (como PHP o JSP para Java), lo que redundaba en código ilegible y difícil de mantener, por lo que incentivo enfoques con sintaxis específica más limitada, a fin de mantener la lógica de negocio separada de la presentación\cite{logicless1}\cite{logicless2}.
 
 En las aplicaciones tradicionales de Cliente-Servidor, el Cliente realiza un pedido, el Servidor realiza el procesamiento necesario y aplica el sistema de templates para generar la página de respuesta. Al pasar a aplicaciones que se actualizan parcialmente, haciendo uso intensivo de pedidos asincrónicos a través de JavaScript (AJAX), se plantea un problema para generar la presentación de los datos (generalmente una parte de la página que generaría un request tradicional). Las potenciales soluciones son:
 \begin{itemize}
 \item  Enviar solo datos desde el servidor y construir la presentación “manualmente”, con JavaScript. Este método es engorroso y poco mantenible, pues duplica el HTML y hay que reescribirlo cada vez que se modifica la presentación.
 \item  Generar la porción de la presentación en el servidor y enviarla como XML. Esta alternativa es la más simple, si bien ata los requests a la presentación, dificultando el uso de distintas presentaciones para los mismos datos, e incrementando el trabajo realizado por el servidor.
-\item  Utilizar algún sistema de renderizado en el cliente. Este método puede ser una buena opción, pero puede acarrear otros problemas. Se debe elegir entre usar distintos lenguajes en cliente y servidor, encontrar un sistema que se pueda usar en ambos lados o directamente mover por completo la generación de páginas al cliente; todas alternativas con sus respectivas ventajas y desventajas[15][16].
+\item  Utilizar algún sistema de renderizado en el cliente. Este método puede ser una buena opción, pero puede acarrear otros problemas. Se debe elegir entre usar distintos lenguajes en cliente y servidor, encontrar un sistema que se pueda usar en ambos lados o directamente mover por completo la generación de páginas al cliente; todas alternativas con sus respectivas ventajas y desventajas\cite{clientside}\cite{dust}.
 
 \end{itemize}
 
 
-Existe otra clasificación importante a la hora de elegir un sistema de templates [17][18]:
+Existe otra clasificación importante a la hora de elegir un sistema de templates \cite{template2}\cite{richjs}:
 \begin{itemize}
 \item  Basados en Strings: Se refiere a sistemas que trabajan sobre cadenas de texto arbitrarias, generalmente usando un lenguaje específico para crear el template. Es el método más simple para el programador, es el usado por los sistemas tradicionales en el servidor (Django, Velocity) y también por los más populares en el cliente (Mustache, Handlebars).
-\item  Basados en el DOM: Funcionan directamente sobre la sintaxis de la página web, definiendo tags o atributos, sin la necesidad de definir un lenguaje específico, manteniendo la compatibilidad con HTML. Son menos intuitivos que los basados en strings, pero se adaptan mejor al browser, que en el mediano plazo los soportará nativamente[18]. Las alternativas de sistemas de templates basados en DOM son por sí solas menos prácticas e intuitivas que las basadas en strings, existen algunas bibliotecas más amplias como angular.js y knockout.js que integran sistemas de este tipo (ver adelante), pudiendo resultar en opciones más interesantes que el uso de un sistema de templates tradicional.
+\item  Basados en el DOM: Funcionan directamente sobre la sintaxis de la página web, definiendo tags o atributos, sin la necesidad de definir un lenguaje específico, manteniendo la compatibilidad con HTML. Son menos intuitivos que los basados en strings, pero se adaptan mejor al browser, que en el mediano plazo los soportará nativamente\cite{richjs}. Las alternativas de sistemas de templates basados en DOM son por sí solas menos prácticas e intuitivas que las basadas en strings, existen algunas bibliotecas más amplias como angular.js y knockout.js que integran sistemas de este tipo (ver adelante), pudiendo resultar en opciones más interesantes que el uso de un sistema de templates tradicional.
 
 \end{itemize}
 
@@ -118,26 +120,24 @@ En el contexto del presente trabajo, se buscará utilizar alguno de los sistemas
 
 \end{itemize}
 \subsection{Node.js}
+Node.js\cite{node} es una plataforma para crear aplicaciones, eminentemente servidores web, con la particularidad de que ejecuta código JavaScript, un lenguaje previamente restringido a los navegadores. Esto permite el desarrollo de aplicaciones web usando exclusivamente aquel lenguaje, que de por sí es necesario en cualquier aplicación web moderna, evitando usar otros para el procesamiento en el servidor, como PHP o Ruby, y abriendo la posibilidad a la simplificación y reutilización del código\cite{nodenormals}\cite{nodeunderstand}. Así, Node.js resulta especialmente útil para aplicaciones con clientes ricos y en tiempo real\cite{nodeboss}. Todo lo cual lo convierte en una tecnología de uso casi obligatorio para alcanzar los fines de este trabajo. Otra característica distintiva de Node.js, es que tiene un modelo de funcionamiento asincrónico, es decir que las operaciones de Entrada-Salida no son bloqueantes, haciéndolo particularmente eficiente para aplicaciones con acceso intensivo a datos y mucha concurrencia, como lo son muchas aplicaciones web.
 
+La filosofía de desarrollo de Node.js, y por extensión de las aplicaciones que lo utilizan, es la de construir núcleos pequeños y complementarlos con módulos poco acoplados\cite{nodephilosophy}. Dicha filosofía es incentivada por un eficiente gestor de paquetes, npm\cite{npm}. A su vez, es una de las tecnologías más populares en la actualidad\cite{githubstars}, con una comunidad dinámica, por lo que la mayoría de los avances en aplicaciones web suelen desarrollarse para Node.js. socket.io\cite{socketio} es un ejemplo de esto. Este esquema favorece al presente trabajo, en tanto sería viable utilizar módulos ya existentes para resolver los problemas más comunes y escribir otros específicos para alcanzar los objetivos planteados. 
 
-Node.js[24] es una plataforma para crear aplicaciones, eminentemente servidores web, con la particularidad de que ejecuta código JavaScript, un lenguaje previamente restringido a los navegadores. Esto permite el desarrollo de aplicaciones web usando exclusivamente aquel lenguaje, que de por sí es necesario en cualquier aplicación web moderna, evitando usar otros para el procesamiento en el servidor, como PHP o Ruby, y abriendo la posibilidad a la simplificación y reutilización del código[25][26]. Así, Node.js resulta especialmente útil para aplicaciones con clientes ricos y en tiempo real[27]. Todo lo cual lo convierte en una tecnología de uso casi obligatorio para alcanzar los fines de este trabajo. Otra característica distintiva de Node.js, es que tiene un modelo de funcionamiento asincrónico, es decir que las operaciones de Entrada-Salida no son bloqueantes, haciéndolo particularmente eficiente para aplicaciones con acceso intensivo a datos y mucha concurrencia, como lo son muchas aplicaciones web.
-
-La filosofía de desarrollo de Node.js, y por extensión de las aplicaciones que lo utilizan, es la de construir núcleos pequeños y complementarlos con módulos poco acoplados[28]. Dicha filosofía es incentivada por un eficiente gestor de paquetes, npm[29]. A su vez, es una de las tecnologías más populares en la actualidad[34], con una comunidad dinámica, por lo que la mayoría de los avances en aplicaciones web suelen desarrollarse para Node.js. socket.io[6] es un ejemplo de esto. Este esquema favorece al presente trabajo, en tanto sería viable utilizar módulos ya existentes para resolver los problemas más comunes y escribir otros específicos para alcanzar los objetivos planteados. 
-
-Los frameworks o bibliotecas con motivaciones similares a la del presente trabajo, están desarrollados en Node.js, si bien en su mayoría no están todavía en condiciones de ser usados en producción[35][36].
+Los frameworks o bibliotecas con motivaciones similares a la del presente trabajo, están desarrollados en Node.js, si bien en su mayoría no están todavía en condiciones de ser usados en producción\cite{nodeodd}\cite{nodefws}.
 
 \subsubsection{Express}
-Express[37] es un framework web minimalista, de los más populares y robustos de Node.js.  Express es impone pocas restricciones y deja la mayoría de las decisiones (y su implementación) al programador[35]. Esto lo hace muy flexible, acoplándose bien a la filosofía descrita anteriormente: existen muchos módulos para extender su funcionalidad básica. De esta forma, una buena forma de construir una plataforma web para Node.js es partir de Express y extenderlo con un set de módulos independientes; así lo hacen Derby y Tower.js[47].
+Express\cite{express} es un framework web minimalista, de los más populares y robustos de Node.js.  Express es impone pocas restricciones y deja la mayoría de las decisiones (y su implementación) al programador\cite{nodefws}. Esto lo hace muy flexible, acoplándose bien a la filosofía descrita anteriormente: existen muchos módulos para extender su funcionalidad básica. De esta forma, una buena forma de construir una plataforma web para Node.js es partir de Express y extenderlo con un set de módulos independientes; así lo hacen Derby y Tower.js\cite{tower}.
 
 \subsubsection{Derby y Meteor}
-Derby es un framework para construir aplicaciones en tiempo real, que funcionen tanto en el browser como en Node.js. Se propone como una solución al desorden acarreado al agregar dinamismo a aplicaciones clásicas MVC, y la duplicación implícita al incluir una estructura MVC en cliente[58]. La documentación y el grado de desarrollo del proyecto son limitados[35].
+Derby es un framework para construir aplicaciones en tiempo real, que funcionen tanto en el browser como en Node.js. Se propone como una solución al desorden acarreado al agregar dinamismo a aplicaciones clásicas MVC, y la duplicación implícita al incluir una estructura MVC en cliente\cite{derby}. La documentación y el grado de desarrollo del proyecto son limitados\cite{nodefws}.
 
-Meteor[59] tiene muchos puntos en común con Derby, si bien con un enfoque distinto: mientras que Derby hace hincapié en las aplicaciones en tiempo real, Meteor busca ser una plataforma de uso general, aplicable a la mayoría de los sitios en la web[60]. Otras diferencias son que tiene más exposición y mayor documentación que Derby[61] y una tendencia a ser una plataforma cerrada[62].
+Meteor\cite{meteor} tiene muchos puntos en común con Derby, si bien con un enfoque distinto: mientras que Derby hace hincapié en las aplicaciones en tiempo real, Meteor busca ser una plataforma de uso general, aplicable a la mayoría de los sitios en la web\cite{derbymeteor}. Otras diferencias son que tiene más exposición y mayor documentación que Derby\cite{derbyrant1} y una tendencia a ser una plataforma cerrada\cite{derbyrant2}.
 
 En ambos frameworks los objetivos coinciden al menos parcialmente con los de este trabajo, si bien son más amplios, tratándose de soluciones complejas que abarcan todas las capas del desarrollo. En este sentido, vemos difícil trabajar sobre ellos para el presente trabajo, dado lo acotado de su alcance.
 
 \subsubsection{Flatiron}
-Flatiron[38] es un framework web, formado por un conjunto de componentes independientes y opcionales, a fin de proveer soluciones en todos los aspectos del desarrollo, sin perder flexibilidad[39]. Si bien es mucho menos popular que los anteriores, su filosofía y motivaciones lo hacen un caso de estudio interesante. Por un lado, se armó llevando el extremo la idea de construir aplicaciones en base a pequeños núcleos extendidos mediante módulos poco acoplados[28], y por otro, sus autores lo presentan como propicio para implementar un patrón de arquitectura superador del MVC, que permite reusar el código en el servidor y el cliente[40]. 
+Flatiron\cite{flatiron} es un framework web, formado por un conjunto de componentes independientes y opcionales, a fin de proveer soluciones en todos los aspectos del desarrollo, sin perder flexibilidad\cite{flatironintro}. Si bien es mucho menos popular que los anteriores, su filosofía y motivaciones lo hacen un caso de estudio interesante. Por un lado, se armó llevando el extremo la idea de construir aplicaciones en base a pequeños núcleos extendidos mediante módulos poco acoplados\cite{nodephilosophy}, y por otro, sus autores lo presentan como propicio para implementar un patrón de arquitectura superador del MVC, que permite reusar el código en el servidor y el cliente\cite{isomorphic}. 
 
 \subsection{Frameworks JavaScript}
 \subsubsection{Backbone.js}
@@ -157,7 +157,7 @@ Backbone.js fue uno de los primeros frameworks que propuso una solución para re
 \subsubsection{Knockout}
 Knockout[44] es una biblioteca de Javascript para el cliente, cuyo objetivo principal es soportar two way bindings, que se podría traducir como “ligadura bidireccional”. La ligadura bidireccional consiste en proveer una sincronización entre objetos del DOM y Tipos Abstractos de Datos del lenguaje de programación, en este caso, Javascript. 
 
-Por ejemplo, si uno creará una aplicación web que se encarga de realizar operaciones de ABM sobre una lista de tareas, si uno quisiera mostrar la cantidad de tareas pendientes en forma dinámica, probablemente usaría la biblioteca más popular del momento, Jquery, y para hacerlo tendría que contar la cantidad de filas que tiene la lista, es decir, la cantidad de atributos <tr> de HTML, en vez de pensar a nivel de objetos, en este caso, de tareas. Cada vez que cambie la cantidad de tareas, se tendría que actualizar manualmente este número. Con Knockout en cambio, se puede definir declarativamente que se quiere mostrar el número de tareas, y la biblioteca se va a encargar de actualizar este número automáticamente en el momento que la lista cambie. 
+Por ejemplo, si uno creará una aplicación web que se encarga de realizar operaciones de ABM sobre una lista de tareas, si uno quisiera mostrar la cantidad de tareas pendientes en forma dinámica, probablemente usaría la biblioteca más popular del momento, Jquery, y para hacerlo tendría que contar la cantidad de filas que tiene la lista, es decir, la cantidad de atributos \textless tr\textgreater  de HTML, en vez de pensar a nivel de objetos, en este caso, de tareas. Cada vez que cambie la cantidad de tareas, se tendría que actualizar manualmente este número. Con Knockout en cambio, se puede definir declarativamente que se quiere mostrar el número de tareas, y la biblioteca se va a encargar de actualizar este número automáticamente en el momento que la lista cambie. 
 
 De esta manera, el programador se desliga de mantener el DOM sincronizado con respecto a los objetos de javascript que se mantienen en memoria, y cada vez que estos cambien, el DOM se actualizará automáticamente. Se denomina bidireccional porque no solo sincroniza el DOM a partir de cambios en el modelo, sino que también sincroniza el modelo a partir de cambios en el DOM, más específicamente, a partir de interacciones del usuario con la página web. 
 
@@ -190,26 +190,26 @@ La mayor cantidad de conclusiones se extrajeron del uso de templates en el clien
 \end{itemize}
 
 
-De todo esto se concluye que un sistema de templates en el cliente, por sí solo acarrea más problemas de los que resuelve. Para sacarle partido se hace necesario introducir algún tipo de biblioteca que permita manejar modelos en el cliente, como Backbone.js, u otra que directamente tenga el sistema de templates integrado, como meteor o derby.js.\subsection{Node.js + Express + Backbone}
+De todo esto se concluye que un sistema de templates en el cliente, por sí solo acarrea más problemas de los que resuelve. Para sacarle partido se hace necesario introducir algún tipo de biblioteca que permita manejar modelos en el cliente, como Backbone.js, u otra que directamente tenga el sistema de templates integrado, como meteor o derby.js.
 
-
+\subsection{Node.js + Express + Backbone}
 Este prototipo[48] sirvió para familiarizarse con el uso de Node.js, y para comenzar a explorar las posibilidades de reusar código en cliente y servidor. En particular, se buscó implementar una arquitectura MVC en cada uno e intentar reutilizar las definiciones de los modelos. Se trata de un sistema de inscripción a los cursos de una universidad. Este prototipo fue desarrollado en el marco de la materia Arquitectura de Software; para mayor contexto, referirse a [49].
 
 Para justificar la necesidad de una arquitectura MVC en el cliente, se agregaron los requerimientos de que el sistema funcione como Single-Page App (SPA)[50], y que las vistas se actualice automáticamente ante las acciones del usuario. A su vez, se eligieron frameworks en cliente y servidor que tuvieran una noción bien definida de modelos, para intentar reutilizarlos: Mongoose[51] y Backbone[41].
 
 Al llevar a la práctica esta idea se encontró un problema de incompatibilidad entre la manera de definir, instanciar y utilizar los modelos de Mongoose y Backbone. Asimismo la utilización de métodos de esos modelos estaba limitada por la necesidad de serializar los objetos para transportarlos del servidor al cliente y del cliente al motor de templates.
 
-De esta forma, este prototipo nos da la noción de que si bien el uso de Node.js habilita la posibilidad de reutilizar código en cliente y servidor, efectivizar tal posibilidad no es una tarea trivial, y que la ganancia no justifica el costo de su implementación para el caso promedio. Por lo tanto esta es una tarea que sólo tendría sentido ser resuelta por una biblioteca específica, que abstraiga toda esa complejidad.\subsection{Node.js + Angular + CoffeeScript}
+De esta forma, este prototipo nos da la noción de que si bien el uso de Node.js habilita la posibilidad de reutilizar código en cliente y servidor, efectivizar tal posibilidad no es una tarea trivial, y que la ganancia no justifica el costo de su implementación para el caso promedio. Por lo tanto esta es una tarea que sólo tendría sentido ser resuelta por una biblioteca específica, que abstraiga toda esa complejidad.
 
-
+\subsection{Node.js + Angular + CoffeeScript}
 En el marco laboral se está desarrollando una aplicación[57] utilizando varias tecnologías antes mencionadas. Es una aplicación de tipo SPA[50], que utiliza AngularJS como frontend y Node.js (Express) como backend, el cual provee una API Rest. Como base de datos se utiliza MongoDB. En cuanto al lenguaje de programación, se utiliza CoffeeScript. 
 
 Acekia es una herramienta para administración de casos de prueba, y conjuntos de pruebas, hitos, y corridas de tests. Además provee distintas métricas y gráficos. La herramienta está dirigida a los analistas o ingenieros en QA y QC.
 
-Uno de los mayores retos de la aplicación es la comunicación entre los modelos vivos en el cliente, y la API Rest en el servidor. No se encontró una herramienta que pudiera brindar de manera sencilla una sincronización de los modelos, y que además permita reutilizarlos en el cliente y en el servidor. De esta manera, la aplicación adolece de cierta duplicación en la lógica de los modelos, y en el código del backend. Pretendemos solucionar la mayoría de dichos problemas con plataforma que se propone desarrollar este trabajo. \section{Desarrollo}
+Uno de los mayores retos de la aplicación es la comunicación entre los modelos vivos en el cliente, y la API Rest en el servidor. No se encontró una herramienta que pudiera brindar de manera sencilla una sincronización de los modelos, y que además permita reutilizarlos en el cliente y en el servidor. De esta manera, la aplicación adolece de cierta duplicación en la lógica de los modelos, y en el código del backend. Pretendemos solucionar la mayoría de dichos problemas con plataforma que se propone desarrollar este trabajo. 
+
+\section{Desarrollo}
 \subsection{Análisis}
-
-
 Para continuar con el diseño de la plataforma extraemos algunas conclusiones del trabajo de investigación anterior:
 \begin{itemize}
 \item  Para poder reutilizar código en el cliente y el servidor, es necesario utilizar JavaScript, y para utilizar JavaScript en el servidor es necesario Node.js. Express.js, por ser minimalista y de uso extendido, se presenta como una buena base sobre la que trabajar para desarrollar una nueva Plataforma.
@@ -693,7 +693,7 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
   \emph{JavaScript: The Good Parts}.
 
 \bibitem{grunt}
-  \emph{Grunt}.
+  \emph{Grunt, the JavaScript task runner}.
   \url{http://gruntjs.com/}
 
 \bibitem{sourcemaps}
@@ -736,20 +736,118 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
   Leonard Richardson & Sam Ruby
   \emph{RESTful Web Services}.
 
+\bibitem{template}
+  \emph{Web template system}.
+  \url{http://en.wikipedia.org/wiki/Web_template_system}
 
-[12] http://en.wikipedia.org/wiki/Web_template_system
+\bibitem{logicless1}
+  \emph{What's the advantage of Logic-less template (such as mustache)?}.
+  \url{http://stackoverflow.com/a/4946409/993769}
 
-[13] http://stackoverflow.com/a/4946409/993769
+\bibitem{logicless2}
+  Satish Pottavathini,
+  \emph{The Case Against Logic-less Templates}.
+  \url{http://www.ebaytechblog.com/2012/10/01/the-case-against-logic-less-templates/}
 
-[14] http://www.ebaytechblog.com/2012/10/01/the-case-against-logic-less-templates/
+\bibitem{clientside}
+  Pascal Deschenes,
+  \emph{On Client Side Templating}.
+  \url{http://blog.rassemblr.com/2011/04/on-client-side-templating/}
 
-[15] http://blog.rassemblr.com/2011/04/on-client-side-templating/
+\bibitem{dust}
+  Veena Basavaraj,
+  \emph{Leaving JSPs in the dust: moving LinkedIn to dust.js client-side templates}.
+  \url{http://engineering.linkedin.com/frontend/leaving-jsps-dust-moving-linkedin-dustjs-client-side-templates}
 
-[16] http://engineering.linkedin.com/frontend/leaving-jsps-dust-moving-linkedin-dustjs-client-side-templates
+\bibitem{template2}
+  \emph{Template Engines}.
+  \url{http://codingarchitect.wordpress.com/2012/10/22/template-engines/}
 
-[17] http://codingarchitect.wordpress.com/2012/10/22/template-engines/
+\bibitem{nodenormals}
+  Saadiq Rodgers-King,
+  \emph{Node for normals}.
+  \url{http://blog.nodejitsu.com/node-for-normals}
 
-[18] http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/
+\bibitem{nodeunderstand}
+  Felix Geisendörfer,
+  \emph{Understanding node.js}.
+  \url{http://debuggable.com/posts/understanding-node-js:4bd98440-45e4-4a9a-8ef7-0f7ecbdd56cb}
+
+\bibitem{nodeboss}
+  Felix Geisendörfer,
+  \emph{Felix's Node.js Convincing the boss guide}.
+  \url{http://nodeguide.com/convincing_the_boss.html}
+
+\bibitem{nodephilosophy}
+  Charlie Robbins,
+  \emph{The Node.js philosophy}.
+  \url{http://blog.nodejitsu.com/the-nodejs-philosophy}
+
+\bibitem{npm}
+  \emph{Node Packaged Modules}.
+  \url{https://npmjs.org/}
+
+\bibitem{githubstars}
+  Dan Nanni, 
+  \emph{Most popular open-source projects hosted at GitHub}.
+  \url{http://xmodulo.com/2013/09/popular-open-source-projects-hosted-github.html}
+
+\bibitem{nodeodd}
+  Andrew Munsell, 
+  \emph{The (Odd) State of Node.js and its Frameworks}.
+  \url{http://www.andrewmunsell.com/blog/the-odd-state-of-nodejs-and-its-frameworks/#.UQFEO2LhrXQ}
+
+\bibitem{nodefws}
+  Tyler Renelle, 
+  \emph{Node.js frameworks comparison}.
+  \url{http://ocdevel.com/blog/nodejs-frameworks-comparison}
+
+\bibitem{express}
+  \emph{Express, web application framework for node}.
+  \url{http://expressjs.com/}
+
+\bibitem{tower}
+  \emph{Tower}.
+  \url{http://towerjs.org/}
+
+\bibitem{derby}
+  \emph{Derby}.
+  \url{http://derbyjs.com/}
+
+\bibitem{meteor}
+  \emph{Meteor}.
+  \url{http://meteor.com/}
+
+\bibitem{derbymeteor}
+  Nate Smith y Brian Noguchi,
+  \emph{Our take on Derby vs. Meteor}.
+  \url{http://blog.derbyjs.com/2012/04/14/our-take-on-derby-vs-meteor/}
+
+\bibitem{derbyrant1}
+  Ben Ellis,
+  \emph{Rant: Backbone, Angular, Meteor, Derby}.
+  \url{https://gist.github.com/ble/4457840}
+
+\bibitem{derbyrant2}
+  Tyler Renelle,
+  \emph{Response to the rant}.
+  \url{https://gist.github.com/4457396}
+
+\bibitem{flatiron}
+  \emph{Flatiron}.
+  \url{http://flatironjs.org/}
+
+\bibitem{flatironintro}
+  Charlie Robbins,
+  \emph{Introducing Flatiron}.
+  \url{http://blog.nodejitsu.com/introducing-flatiron}
+
+\bibitem{isomorphic}
+  Charlie Robbins,
+  \emph{Scaling Isomorphic Javascript Code}.
+  \url{http://blog.nodejitsu.com/scaling-isomorphic-javascript-code}
+
+
 
 [19] https://github.com/facundoolano/fodder
 
@@ -761,34 +859,9 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 
 [23] http://handlebarsjs.com/
 
-[25] http://blog.nodejitsu.com/node-for-normals
-
-[26] http://debuggable.com/posts/understanding-node-js:4bd98440-45e4-4a9a-8ef7-0f7ecbdd56cb
-
-[27] http://nodeguide.com/convincing_the_boss.html
-
-[28] http://blog.nodejitsu.com/the-nodejs-philosophy
-
-[29] https://npmjs.org/
-
-
-
 
 [33] http://es.wikipedia.org/wiki/Lenguaje_espec%C3%ADfico_del_dominio
 
-[34] https://github.com/popular/starred
-
-[35] http://www.andrewmunsell.com/blog/the-odd-state-of-nodejs-and-its-frameworks/#.UQFEO2LhrXQ
-
-[36] http://ocdevel.com/blog/nodejs-frameworks-comparison
-
-[37] http://expressjs.com/
-
-[38] http://flatironjs.org/
-
-[39] http://blog.nodejitsu.com/introducing-flatiron
-
-[40] http://blog.nodejitsu.com/scaling-isomorphic-javascript-code
 
 [41] http://backbonejs.org/
 
@@ -802,7 +875,7 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 
 [46] http://kmalakoff.github.com/knockback/
 
-[47] http://towerjs.org/
+
 
 [48] https://github.com/facundoolano/drymodels
 
@@ -824,15 +897,9 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 
 [57] http://acekia.com/
 
-[58] http://derbyjs.com/
 
-[59] http://meteor.com/
 
-[60] http://blog.derbyjs.com/2012/04/14/our-take-on-derby-vs-meteor/
 
-[61] https://gist.github.com/lefnire/4454814
-
-[62] https://gist.github.com/4457396
 
 [1] https://docs.google.com/document/d/11Gz0CgrDWVyLb8NTw_dXv3D8PS8ewRkW4XWYlJma6nQ/edit?usp=sharing
 

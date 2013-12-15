@@ -141,7 +141,7 @@ Flatiron\cite{flatiron} es un framework web, formado por un conjunto de componen
 
 \subsection{Frameworks JavaScript}
 \subsubsection{Backbone.js}
-Backbone.js[41] es un framework JavaScript que permite estructurar el código de clientes web para seguir una arquitectura MVC, evitando el código poco mantenible que suele surgir si sólo se realiza manipulación del DOM a través de bibliotecas como JQuery. Los conceptos básicos de Backbone son[43]:
+Backbone.js\cite{backbone} es un framework JavaScript que permite estructurar el código de clientes web para seguir una arquitectura MVC, evitando el código poco mantenible que suele surgir si sólo se realiza manipulación del DOM a través de bibliotecas como JQuery. Los conceptos básicos de Backbone son\cite{backboneaddy}:
 \begin{itemize}
 \item  Modelos: son objetos que contienen datos y su lógica asociada. Se crean extendiendo un modelo de Backbone que provee “ganchos” para acceder atributos, asociar el modelo a eventos y sincronizar con el servidor.
 \item  Vistas: contienen la lógica para presentar los datos del modelo, generalmente mediante algún sistema de Templates.
@@ -152,10 +152,10 @@ Backbone.js[41] es un framework JavaScript que permite estructurar el código de
 \end{itemize}
 
 
-Backbone.js fue uno de los primeros frameworks que propuso una solución para realizar código mantenible en el cliente, y ganó popularidad al punto de convertirse casi en un estándar. Sin embargo, ofrece principalmente una estructura y convenciones, pero casi todas las implementaciones las sigue realizando el usuario, es decir, no resuelve la mayoría de los problemas recurrentes en aplicaciones ricas, por ejemplo la sincronización entre modelos y elementos del DOM. En la actualidad, existen alternativas más completas [42].
+Backbone.js fue uno de los primeros frameworks que propuso una solución para realizar código mantenible en el cliente, y ganó popularidad al punto de convertirse casi en un estándar. Sin embargo, ofrece principalmente una estructura y convenciones, pero casi todas las implementaciones las sigue realizando el usuario, es decir, no resuelve la mayoría de los problemas recurrentes en aplicaciones ricas, por ejemplo la sincronización entre modelos y elementos del DOM. En la actualidad, existen alternativas más completas\cite{derbyrant1}.
 
 \subsubsection{Knockout}
-Knockout[44] es una biblioteca de Javascript para el cliente, cuyo objetivo principal es soportar two way bindings, que se podría traducir como “ligadura bidireccional”. La ligadura bidireccional consiste en proveer una sincronización entre objetos del DOM y Tipos Abstractos de Datos del lenguaje de programación, en este caso, Javascript. 
+Knockout\cite{knockout} es una biblioteca de Javascript para el cliente, cuyo objetivo principal es soportar two way bindings, que se podría traducir como “ligadura bidireccional”. La ligadura bidireccional consiste en proveer una sincronización entre objetos del DOM y Tipos Abstractos de Datos del lenguaje de programación, en este caso, Javascript. 
 
 Por ejemplo, si uno creará una aplicación web que se encarga de realizar operaciones de ABM sobre una lista de tareas, si uno quisiera mostrar la cantidad de tareas pendientes en forma dinámica, probablemente usaría la biblioteca más popular del momento, Jquery, y para hacerlo tendría que contar la cantidad de filas que tiene la lista, es decir, la cantidad de atributos \textless tr\textgreater  de HTML, en vez de pensar a nivel de objetos, en este caso, de tareas. Cada vez que cambie la cantidad de tareas, se tendría que actualizar manualmente este número. Con Knockout en cambio, se puede definir declarativamente que se quiere mostrar el número de tareas, y la biblioteca se va a encargar de actualizar este número automáticamente en el momento que la lista cambie. 
 
@@ -166,21 +166,21 @@ La forma que se define una ligadura entre un elemento de HTML y un objeto de jav
 Una particularidad de esta biblioteca sobre otras soluciones similares consiste en que se puede utilizar en la medida que uno lo desee, ya sea para resolver un problema en particular como una herramienta integral en toda la aplicación. La biblioteca se utiliza a menudo a la par de Jquery. 
 
 \subsubsection{AngularJS}
-AngularJS[45] es, a diferencia de algunas de las soluciones descritas anteriormente, es un framework MVVM que permite extender su funcionalidad adaptándose mejor a la aplicación a programar. 
+AngularJS\cite{angular} es, a diferencia de algunas de las soluciones descritas anteriormente, es un framework MVVM que permite extender su funcionalidad adaptándose mejor a la aplicación a programar. 
 
-Consiste en extender el lenguaje HTML creando sus propias ‘directivas’[56], que serán interpretados por el motor propio de Angular produciendo una página web dinámica. Además, el programador puede crear sus propias directivas como componentes y atributos HTML.
+Consiste en extender el lenguaje HTML creando sus propias ‘directivas’\cite{directive}, que serán interpretados por el motor propio de Angular produciendo una página web dinámica. Además, el programador puede crear sus propias directivas como componentes y atributos HTML.
 
 AngularJS además provee controladores, sobre los cuales se pueden definir objetos de JavaScript que serán observados para conseguir el llamado two way binding. A diferencia de otras soluciones MVVM, como Ember o Knockout, los objetos observados por Angular no requieren implementar ninguna interfaz, seguir una convención, o heredar de algun modelo especial. Esto lo convierte en un buen candidato para utilizar junto a nuestra solución, dado que no hay que hacer una adaptación especial para que nuestros modelos puedan funcionar. 
 
-Actualmente es probablemente el framework JS más popular, tomando como medida la cantidad de preguntas hechas en Stackoverflow[53][54][55], y la cantidad de ‘stars’ en sus respectivos proyectos en Github[34].
+Actualmente es probablemente el framework JS más popular, tomando como medida la cantidad de preguntas hechas en Stackoverflow\cite{knockoutso}\cite{emberso}\cite{angularso}, y la cantidad de ‘stars’ en sus respectivos proyectos en Github\cite{githubstars}.
 
 \section{Prototipos}
 \subsection{REST + SSE + Handlebars}
-El prototipo[19] consiste en un feed en tiempo real. Los usuarios pueden enviar textos cortos que se actualizan automáticamente para todos los usuarios, sin la necesidad de refrescar la página. Se eligió este tipo de aplicación por ser un caso simple en que se encuentran varios de los problemas que pretenden resolver las tecnologías en estudio: actualizaciones en tiempo real desde el servidor, elementos de la presentación que se deben modificar sin recargar la página. La aplicación se estructuró como una API REST, usando el framework Python Flask[20] en el servidor; se lo eligió por ser simple y de rápida configuración. 
+El prototipo\cite{fodder} consiste en un feed en tiempo real. Los usuarios pueden enviar textos cortos que se actualizan automáticamente para todos los usuarios, sin la necesidad de refrescar la página. Se eligió este tipo de aplicación por ser un caso simple en que se encuentran varios de los problemas que pretenden resolver las tecnologías en estudio: actualizaciones en tiempo real desde el servidor, elementos de la presentación que se deben modificar sin recargar la página. La aplicación se estructuró como una API REST, usando el framework Python Flask\cite{flask} en el servidor; se lo eligió por ser simple y de rápida configuración. 
 
-Para la comunicación Servidor-Cliente, se utilizaron Server-Sent Events, y el patrón Publish-Subscribe[21] en el servidor, a través de Redis[22]. La implementación de los SSE demostró ser trivial, por lo que se confirmó como una buena alternativa para resolver la comunicación bidireccional, al menos en tanto no se quiera utilizar una biblioteca más amplia como socket.io.
+Para la comunicación Servidor-Cliente, se utilizaron Server-Sent Events, y el patrón Publish-Subscribe\cite{pubsub} en el servidor, a través de Redis\cite{redis}. La implementación de los SSE demostró ser trivial, por lo que se confirmó como una buena alternativa para resolver la comunicación bidireccional, al menos en tanto no se quiera utilizar una biblioteca más amplia como socket.io.
 
-La mayor cantidad de conclusiones se extrajeron del uso de templates en el cliente. Se requería poder manejar los templates del cliente, puesto que la aplicación requiere agregar y actualizar las entradas del feed en tiempo real, basados exclusivamente en los datos. Se eligió usar handlebars.js[23] por ser la biblioteca de uso más extendido. Se trata de templates basados en strings, que se compilan desde JavaScript en el cliente. Como la aplicación se estructuró como una API, se optó por realizar todo el procesamiento de templates en el cliente. En la práctica se encontraron varios inconvenientes, en algunos casos por limitaciones de handlebars, y en otros por problemas de este tipo de arquitectura.
+La mayor cantidad de conclusiones se extrajeron del uso de templates en el cliente. Se requería poder manejar los templates del cliente, puesto que la aplicación requiere agregar y actualizar las entradas del feed en tiempo real, basados exclusivamente en los datos. Se eligió usar handlebars.js\cite{handlebars} por ser la biblioteca de uso más extendido. Se trata de templates basados en strings, que se compilan desde JavaScript en el cliente. Como la aplicación se estructuró como una API, se optó por realizar todo el procesamiento de templates en el cliente. En la práctica se encontraron varios inconvenientes, en algunos casos por limitaciones de handlebars, y en otros por problemas de este tipo de arquitectura.
 \begin{itemize}
 \item  Comparado con sistemas tradicionales de templates, la funcionalidad de handlebars es limitada, particularmente en lo que se refiere a la modularización de los templates. No hay método de incluir uno en otro ni concepto de “herencia” de templates. 
 \item  Tampoco hay forma predefinida de dividir los templates en diferentes páginas, para lograrlo hubo que crear código específico que realizaba pedidos adicionales al servidor de los templates que se querían utilizar.
@@ -193,16 +193,16 @@ La mayor cantidad de conclusiones se extrajeron del uso de templates en el clien
 De todo esto se concluye que un sistema de templates en el cliente, por sí solo acarrea más problemas de los que resuelve. Para sacarle partido se hace necesario introducir algún tipo de biblioteca que permita manejar modelos en el cliente, como Backbone.js, u otra que directamente tenga el sistema de templates integrado, como meteor o derby.js.
 
 \subsection{Node.js + Express + Backbone}
-Este prototipo[48] sirvió para familiarizarse con el uso de Node.js, y para comenzar a explorar las posibilidades de reusar código en cliente y servidor. En particular, se buscó implementar una arquitectura MVC en cada uno e intentar reutilizar las definiciones de los modelos. Se trata de un sistema de inscripción a los cursos de una universidad. Este prototipo fue desarrollado en el marco de la materia Arquitectura de Software; para mayor contexto, referirse a [49].
+Este prototipo\cite{arqrepo} sirvió para familiarizarse con el uso de Node.js, y para comenzar a explorar las posibilidades de reusar código en cliente y servidor. En particular, se buscó implementar una arquitectura MVC en cada uno e intentar reutilizar las definiciones de los modelos. Se trata de un sistema de inscripción a los cursos de una universidad. Este prototipo fue desarrollado en el marco de la materia Arquitectura de Software; para mayor contexto, referirse a \cite{arqdoc}.
 
-Para justificar la necesidad de una arquitectura MVC en el cliente, se agregaron los requerimientos de que el sistema funcione como Single-Page App (SPA)[50], y que las vistas se actualice automáticamente ante las acciones del usuario. A su vez, se eligieron frameworks en cliente y servidor que tuvieran una noción bien definida de modelos, para intentar reutilizarlos: Mongoose[51] y Backbone[41].
+Para justificar la necesidad de una arquitectura MVC en el cliente, se agregaron los requerimientos de que el sistema funcione como Single-Page App (SPA)\cite{spa}, y que las vistas se actualice automáticamente ante las acciones del usuario. A su vez, se eligieron frameworks en cliente y servidor que tuvieran una noción bien definida de modelos, para intentar reutilizarlos: Mongoose\cite{mongoose} y Backbone.
 
 Al llevar a la práctica esta idea se encontró un problema de incompatibilidad entre la manera de definir, instanciar y utilizar los modelos de Mongoose y Backbone. Asimismo la utilización de métodos de esos modelos estaba limitada por la necesidad de serializar los objetos para transportarlos del servidor al cliente y del cliente al motor de templates.
 
 De esta forma, este prototipo nos da la noción de que si bien el uso de Node.js habilita la posibilidad de reutilizar código en cliente y servidor, efectivizar tal posibilidad no es una tarea trivial, y que la ganancia no justifica el costo de su implementación para el caso promedio. Por lo tanto esta es una tarea que sólo tendría sentido ser resuelta por una biblioteca específica, que abstraiga toda esa complejidad.
 
 \subsection{Node.js + Angular + CoffeeScript}
-En el marco laboral se está desarrollando una aplicación[57] utilizando varias tecnologías antes mencionadas. Es una aplicación de tipo SPA[50], que utiliza AngularJS como frontend y Node.js (Express) como backend, el cual provee una API Rest. Como base de datos se utiliza MongoDB. En cuanto al lenguaje de programación, se utiliza CoffeeScript. 
+En el marco laboral se está desarrollando una aplicación\cite{acekia} utilizando varias tecnologías antes mencionadas. Es una aplicación de tipo SPA\cite{spa}, que utiliza AngularJS como frontend y Node.js (Express) como backend, el cual provee una API Rest. Como base de datos se utiliza MongoDB\cite{mongo}. En cuanto al lenguaje de programación, se utiliza CoffeeScript. 
 
 Acekia es una herramienta para administración de casos de prueba, y conjuntos de pruebas, hitos, y corridas de tests. Además provee distintas métricas y gráficos. La herramienta está dirigida a los analistas o ingenieros en QA y QC.
 
@@ -235,12 +235,12 @@ En base a las conclusiones anteriores, establecemos la dirección que tendrá el
 
 De acuerdo a los objetivos anteriores, se proponen las siguientes iteraciones, cada una con objetivos parciales, a fin de desarrollar incrementalmente la plataforma:
 \begin{itemize}
-\item  Reutilización modelos. El objetivo será lograr que un objeto JavaScript con atributos y métodos, posiblemente dependientes de código externo, estén disponibles y funcionen correctamente en el cliente. Para esto es necesario estudiar alternativas de sandboxing[2] y las librerías disponibles para emular la funcionalidad del servidor en el cliente (por ejemplo browserify[3] o requirejs[4]).
-\item  Persistencia. Se intentará proveer una interfaz básica en el modelo para guardar, eliminar, buscar, etc. sobre un medio de persistencia. Se estudiará la posibilidad de integrarlo directamente con mongoose[5] o crear una capa de persistencia sobre el driver de MongoDB[6] si esto resulta más práctico.
+\item  Reutilización modelos. El objetivo será lograr que un objeto JavaScript con atributos y métodos, posiblemente dependientes de código externo, estén disponibles y funcionen correctamente en el cliente. Para esto es necesario estudiar alternativas de sandboxing\cite{sandbox} y las librerías disponibles para emular la funcionalidad del servidor en el cliente (por ejemplo browserify\cite{browserify} o requirejs\cite{require}).
+\item  Persistencia. Se intentará proveer una interfaz básica en el modelo para guardar, eliminar, buscar, etc. sobre un medio de persistencia. Se estudiará la posibilidad de integrarlo directamente con mongoose o crear una capa de persistencia sobre el driver de MongoDB si esto resulta más práctico.
 \item  API REST. Esto incluye generar una API REST en el servidor automáticamente al definir un modelo e implementar métodos del modelo que la llamen automáticamente en el cliente cuando se deba interactuar con la base de datos.
 \item  Extensión de la API. Se considerará la posibilidad de proveer más funcionalidad y personalización a la definición de la API.
 \item  Extensión de la persistencia. Se considerará la posibilidad de implementar interacciones más complejas con la base de datos.
-\item  Sincronización automática. Se considerará la posibilidad de utilizar socket.io[7] para propagar automáticamente desde el servidor los cambios que se realizan sobre el modelo.
+\item  Sincronización automática. Se considerará la posibilidad de utilizar socket.io para propagar automáticamente desde el servidor los cambios que se realizan sobre el modelo.
 \item  Aplicación de ejemplo.
 
 \end{itemize}
@@ -261,10 +261,10 @@ El objetivo esencial del framework es poder reutilizar código tanto en el servi
 La segunda cuestión a tener en cuenta es el armado de la arquitectura de la aplicación de manera que sea lo más transparente posible para el usuario. Es decir, que la configuración hecha por el usuario que use el framework sea mínima.\subsubsection{Browserify}
 
 
-El primer punto se resolvió utilizando node-browserify[3]. Esta biblioteca de nodejs tiene como objetivo permitir al programador utilizar módulos en el browser, así como poder usar bibliotecas propias de Node.js. El programa toma un archivo (o muchos) y crea un archivo compilado, llamado bundle, el cual puede ser importado por el cliente. De esta forma podemos resolver uno de los puntos esenciales de nuestro trabajo, a saber, el hecho de poder crear código que funcione tanto en el servidor como en el cliente.\subsubsection{Resolución mediante middleware}
+El primer punto se resolvió utilizando node-browserify\cite{browserify}. Esta biblioteca de nodejs tiene como objetivo permitir al programador utilizar módulos en el browser, así como poder usar bibliotecas propias de Node.js. El programa toma un archivo (o muchos) y crea un archivo compilado, llamado bundle, el cual puede ser importado por el cliente. De esta forma podemos resolver uno de los puntos esenciales de nuestro trabajo, a saber, el hecho de poder crear código que funcione tanto en el servidor como en el cliente.\subsubsection{Resolución mediante middleware}
 
 
-Express.js[8] es el framework Web utilizado en la herramienta. Gracias a su estructura modular es sencillo crear plugins para extender su funcionalidad.
+Express.js es el framework Web utilizado en la herramienta. Gracias a su estructura modular es sencillo crear plugins para extender su funcionalidad.
 
 El funcionamiento de Express se asemeja a los pipes de UNIX, en los cuales se concatenan distintos programas, los cuales poseen una entrada y una salida, y los datos a procesar se van pasando secuencialmente de un programa a otro. En Express, los datos en cuestión son el request y el response HTTP, y cada programa se llama middleware.
 
@@ -290,12 +290,12 @@ Logrado el objetivo de exponer en el cliente los modelos definidos por el usuari
 \end{itemize}
 
 
-Para que el funcionamiento de estos métodos descritos anteriormente, sea equivalente al ejecutarlos en cliente y servidor, es necesario que su implementación varíe en cada caso. En el primero, el método se traducirá en un request http desde el cliente al servidor, mientras que en el segundo se realizará un llamado al driver de persistencia. Al ejecutar la creación de modelos de invisible, se utiliza la implementación correspondiente al contexto que se detecte.\subsubsection{Persistencia y REST}
+Para que el funcionamiento de estos métodos descritos anteriormente, sea equivalente al ejecutarlos en cliente y servidor, es necesario que su implementación varíe en cada caso. En el primero, el método se traducirá en un request http desde el cliente al servidor, mientras que en el segundo se realizará un llamado al driver de persistencia. Al ejecutar la creación de modelos de invisible, se utiliza la implementación correspondiente al contexto que se detecte.
 
-
+\subsubsection{Persistencia y REST}
 Para soportar los pedidos realizados en el cliente, se incluye en la librería una serie de controladores REST para soportar las operaciones básicas sobre el modelo: creación (POST), actualización (PUT), eliminación (DELETE) y recuperación (GET, ya sea sobre un identificador particular, o sobre toda la colección de instancias). Esos controladores llaman a su vez al método correspondiente del modelo, que esta vez ejecutará su implementación específica del servidor.
 
-Para la persistencia se usa la base de datos MongoDB[6], elegida por ser un estándar para el desarrollo en la plataforma Node.js, y porque su flexibilidad favorece la velocidad de desarrollo. Se utiliza el driver nativo de esa base de datos para Node.js[9].
+Para la persistencia se usa la base de datos MongoDB[6], elegida por ser un estándar para el desarrollo en la plataforma Node.js, y porque su flexibilidad favorece la velocidad de desarrollo. Se utiliza el driver nativo de esa base de datos para Node.js\cite{nodemongo}.
 
 La siguiente figura ilustra la intervención de los distintos componentes en la ejecución de un llamado a uno de esos métodos.
 
@@ -309,33 +309,31 @@ La siguiente figura ilustra la intervención de los distintos componentes en la 
 
 \subsection{Tercera iteración}
 \subsubsection{Repositorio público}
-El código fuente se maneja con el sistema de control de versiones distribuido Git[10], a través del sitio Github[11]. Este sitio favorece a sus usuarios en la tarea del desarrollo colaborativo, proveyendo herramientas online para realizar forks y pull requests, reportar bugs, proponer mejoras, etc., siendo el medio estándar para desarrollo del movimiento Open Source en la actualidad. A fin de de habilitar la futura difusión del proyecto, se comenzó a escribir su documentación pública en la portada del proyecto en ese sitio [12]. Se planea extender esta documentación en las iteraciones subsiguientes.
+El código fuente se maneja con el sistema de control de versiones distribuido Git\cite{git}, a través del sitio Github\cite{github}. Este sitio favorece a sus usuarios en la tarea del desarrollo colaborativo, proveyendo herramientas online para realizar forks y pull requests, reportar bugs, proponer mejoras, etc., siendo el medio estándar para desarrollo del movimiento Open Source en la actualidad. A fin de de habilitar la futura difusión del proyecto, se comenzó a escribir su documentación pública en la portada del proyecto en ese sitio\cite{invisible}. Se planea extender esta documentación en las iteraciones subsiguientes.
 
-También se registró el proyecto en npm[13], el gestor de paquetes de Node.js, facilitando la instalación del framework en cualquier proyecto Node.js que quiera utilizarlo, siguiendo las prácticas habituales de la comunidad.\subsubsection{Unit Testing e Integración continua}
+También se registró el proyecto en npm, el gestor de paquetes de Node.js, facilitando la instalación del framework en cualquier proyecto Node.js que quiera utilizarlo, siguiendo las prácticas habituales de la comunidad.
 
-
+\subsubsection{Unit Testing e Integración continua}
 Es vital que cualquier proyecto posea una cantidad importante de tests, que garanticen la confiabilidad y robustez del framework. En particular, al tratarse de un proyecto Open Source, donde son varias las personas que pueden agregar código al proyecto (y, por lo tanto, introducir errores), es de suma importancia que los tests sean fáciles de ejecutar, de programar, y que además esté garantizado de que se corran antes de que nuevo código sea aceptado en el proyecto.
 
 Para cumplir estos objetivos, se utilizaron varias herramientas:
 \begin{itemize}
-\item  Mocha[15]: Se trata de un framework de testing flexible y poderoso. Permite escribir tests utilizando la metodología BDD (Desarrollo basado en comportamiento), que es una extensión de TDD (Desarrollo basado en Tests), pero en el cual se incentiva que los test sean descritos de una forma particular. El framework va a ejecutar todos los tests y mostrar un informe en pantalla de con las ejecuciones que fueron exitosas, y también las que fallaron (en este último caso, nos va a proporcionar más información, como por ejemplo el nombre de la excepción que fue lanzada, o la aserción incorrecta).
-\item  Grunt[16]: Se trata de una herramienta de uso general para ejecución de tareas en JavaScript. Su objetivo es automatizar en mayor medida el ciclo de desarrollo de un proyecto. Nosotros lo usamos, entre otras cosas, para ejecutar los tests de mocha automáticamente en el momento que se hace un cambio local.
-\item  Travis[17]: Es trata de un servicio de Integración Continua (CI) especialmente útil ya que tiene integración con Github. Cada vez que alguien proponga un cambio de código en nuestro servidor (un pull request), el servicio va a levantar un servidor con el código propuesto, correr todos los tests, e informar si el cambio propuesto es seguro (es decir, se pasó todos los tests exitosamente).  
+\item  Mocha\cite{mocha}: Se trata de un framework de testing flexible y poderoso. Permite escribir tests utilizando la metodología BDD (Desarrollo basado en comportamiento), que es una extensión de TDD (Desarrollo basado en Tests), pero en el cual se incentiva que los test sean descritos de una forma particular. El framework va a ejecutar todos los tests y mostrar un informe en pantalla de con las ejecuciones que fueron exitosas, y también las que fallaron (en este último caso, nos va a proporcionar más información, como por ejemplo el nombre de la excepción que fue lanzada, o la aserción incorrecta).
+\item  Grunt\cite{grunt}: Se trata de una herramienta de uso general para ejecución de tareas en JavaScript. Su objetivo es automatizar en mayor medida el ciclo de desarrollo de un proyecto. Nosotros lo usamos, entre otras cosas, para ejecutar los tests de mocha automáticamente en el momento que se hace un cambio local.
+\item  Travis\cite{travis}: Es trata de un servicio de Integración Continua (CI) especialmente útil ya que tiene integración con Github. Cada vez que alguien proponga un cambio de código en nuestro servidor (un pull request), el servicio va a levantar un servidor con el código propuesto, correr todos los tests, e informar si el cambio propuesto es seguro (es decir, se pasó todos los tests exitosamente).  
 
 \end{itemize}
 \subsubsection{Diseño de la aplicación de ejemplo}
-
-
 Habiéndose sentado las bases del framework, se hace necesario para extenderlo y corregirlo, basarse en su utilización en un sistema real. Para ello, en esta iteración comenzamos a planificar una aplicación de ejemplo que se adecúe a tal fin.
 
-En primera instancia se consideró implementar una aplicación de gestión de casos de prueba, similar a la  trabajada en el marco laboral, según se documentó en la etapa de prototipos[1]. Sin embargo se descartó esta idea, por representar un tamaño de trabajo demasiado amplio que cubrir, con un aprovechamiento limitado de las características del framework.
+En primera instancia se consideró implementar una aplicación de gestión de casos de prueba, similar a la  trabajada en el marco laboral, según se documentó en la etapa de prototipos. Sin embargo se descartó esta idea, por representar un tamaño de trabajo demasiado amplio que cubrir, con un aprovechamiento limitado de las características del framework.
 
 Se optó, en cambio, por implementar una aplicación de chat, con manejo de usuarios, contactos y “salones”. La ventaja de este tipo de sistema es que su tamaño es reducido, sin demasiado diseño gráfico, y con mucha dinamicidad. El hecho de que se manejen usuarios agrega un componente de formularios y validaciones que interesa estudiar en el proyecto.
 
-La decisión de implementar un chat, hizo que el soporte de sincronización en tiempo real, que hasta ahora se consideraba funcionalidad secundaria del framework, pase a ser necesaria.\subsection{Cuarta iteración}
+La decisión de implementar un chat, hizo que el soporte de sincronización en tiempo real, que hasta ahora se consideraba funcionalidad secundaria del framework, pase a ser necesaria.
+
+\subsection{Cuarta iteración}
 \subsubsection{Arquitectura de la aplicación de ejemplo}
-
-
 La cuarta iteración se centró en implementar el chat de ejemplo definido anteriormente, y actualizar el framework según esta tarea lo requiera. Se puede sintetizar la arquitectura resultante en las siguientes características:
 \begin{itemize}
 \item  Los casos de uso son: registrar nuevo usuario, ingresar y salir del sistema, listar y agregar contactos, listar y crear salones, enviar mensaje a un contacto, enviar un mensaje a un salón.
@@ -345,11 +343,9 @@ La cuarta iteración se centró en implementar el chat de ejemplo definido anter
 
 \end{itemize}
 \subsubsection{Validaciones}
-
-
 Una de las tareas donde se hace más evidente el problema que pretende resolver Invisible.js es en el manejo de validaciones: resulta deseable para la mejor experiencia de usuario realizarlas en el cliente, pero a la vez es necesario validar todo lo que llega al servidor antes de guardarlo a la base de datos. En general esto implica duplicar la lógica de validación en ambos lados.
 
-Nos interesa entonces proveer alguna manera de definir validaciones en el modelo, y que estas sean aplicables en ambos contextos. Para eso se integró al modelo extendido de Invisible.js la biblioteca revalidator[9], que provee una convención sencilla para definir validaciones sobre un objeto JavaScript y un método para ejecutarlas.
+Nos interesa entonces proveer alguna manera de definir validaciones en el modelo, y que estas sean aplicables en ambos contextos. Para eso se integró al modelo extendido de Invisible.js la biblioteca revalidator\cite{revalidator}, que provee una convención sencilla para definir validaciones sobre un objeto JavaScript y un método para ejecutarlas.
 
 Para aplicar validaciones, el usuario del framework debe definir el atributo “validations” que sigue el esquema requerido por revalidator. Luego se extiende el modelo con el método validate, que será llamado antes de salvar el modelo, arrojando un error si el estado no es válido. Por ejemplo:
 
@@ -396,9 +392,9 @@ En el caso de que uno quiera agregarle funcionalidad de tiempo real a su aplicac
 \subsubsection{Despliegue de la aplicación de ejemplo}
 
 
-Un paso a tener en cuenta a la hora de desarrollar cualquier aplicación web es poder llevarla a un ambiente de producción sin mayores problemas. No es lo mismo un entorno local de desarrollo que uno remoto, y puede haber algunas dificultades a sortear. Necesitamos que nuestro framework sea lo suficientemente flexible como para poder adaptarse a las particularidades de cada entorno. En el último tiempo se están popularizando soluciones de Cloud Computing que permiten aumentar los recursos de hardware asignados a la aplicación con solo apretar un botón (y pagando más dinero, obviamente). Una de las soluciones más conocidas y usadas es Heroku[13], que es la plataforma que usamos para desplegar nuestra aplicación de ejemplo. 
+Un paso a tener en cuenta a la hora de desarrollar cualquier aplicación web es poder llevarla a un ambiente de producción sin mayores problemas. No es lo mismo un entorno local de desarrollo que uno remoto, y puede haber algunas dificultades a sortear. Necesitamos que nuestro framework sea lo suficientemente flexible como para poder adaptarse a las particularidades de cada entorno. En el último tiempo se están popularizando soluciones de Cloud Computing que permiten aumentar los recursos de hardware asignados a la aplicación con solo apretar un botón (y pagando más dinero, obviamente). Una de las soluciones más conocidas y usadas es Heroku\cite{heroku}, que es la plataforma que usamos para desplegar nuestra aplicación de ejemplo. 
 
-Dentro de las particularidades de esta plataforma, hubo que tener en cuenta que usa un servidor externo como base de datos, de modo que es necesario que el que ese parámetro sea configurable en el framework. Nosotros usamos el servicio llamado MongoLab, el cual nos provee la url de la base de datos mediante la variable de entorno MONGOLAB\_URI.
+Dentro de las particularidades de esta plataforma, hubo que tener en cuenta que usa un servidor externo como base de datos, de modo que es necesario que el que ese parámetro sea configurable en el framework. Nosotros usamos el servicio llamado MongoLab\cite{mongolab}, el cual nos provee la url de la base de datos mediante la variable de entorno MONGOLAB\_URI.
 
 Otra de las cuestiones a tener en cuenta es que no todas las plataformas tienen soporte a Websockets. Dado que socket.io implementa el soporte a real time de distintas maneras, esto no es un problema, pero es necesario exponer al usuario las configuraciones para que pueda hacer los cambios pertinentes.
 
@@ -847,95 +843,121 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
   \emph{Scaling Isomorphic Javascript Code}.
   \url{http://blog.nodejitsu.com/scaling-isomorphic-javascript-code}
 
+\bibitem{isomorphic}
+  Addy Osmani,
+  \emph{Developing Backbone.js Applications}.
 
+\bibitem{angular}
+  \emph{AngularJS}.
+  \url{http://docs.angularjs.org/}
 
-[19] https://github.com/facundoolano/fodder
+\bibitem{directive}
+  \emph{Creating Custom Directives}.
+  \url{http://docs.angularjs.org/guide/directive}
 
-[20] http://flask.pocoo.org/
+\bibitem{knockoutso}
+  \emph{Knockout.js tagged questions}.
+  \url{http://stackoverflow.com/questions/tagged/knockout.js}
 
-[21] http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
+\bibitem{angularso}
+  \emph{AngularJS tagged questions}.
+  \url{http://stackoverflow.com/questions/tagged/angularjs}
 
-[22] http://redis.io/
+\bibitem{emberso}
+  \emph{Ember.js tagged questions}.
+  \url{http://stackoverflow.com/questions/tagged/ember.js}
 
-[23] http://handlebarsjs.com/
+\bibitem{fodder}
+  \emph{Fodder}.
+  \url{https://github.com/facundoolano/fodder}
 
+\bibitem{flask}
+  \emph{Flask, web development, one drop at a time}.
+  \url{http://flask.pocoo.org/}
 
-[33] http://es.wikipedia.org/wiki/Lenguaje_espec%C3%ADfico_del_dominio
+\bibitem{pubsub}
+  \emph{Publish–subscribe pattern}.
+  \url{http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern}
 
+\bibitem{redis}
+  \emph{Redis}.
+  \url{http://redis.io/}
 
-[41] http://backbonejs.org/
+\bibitem{handlebars}
+  \emph{handlebars}.
+  \url{http://handlebarsjs.com/}
 
-[42] https://gist.github.com/4454814
+\bibitem{arqrepo}
+  \emph{drymodels}.
+  \url{https://github.com/facundoolano/drymodels}
 
-[43] Developing Backbone.js Applications, Addy Osmani.
+\bibitem{arqdoc}
+  \emph{TP Arquitectura}.
+  \url{https://docs.google.com/document/d/14jvEphmMU-X22szfy1xyjX3of6eEq7ezoB_U6skHt9k/edit?usp=sharing}
 
-[44] http://knockoutjs.com/
+\bibitem{spa}
+  \emph{Single-page application}.
+  \url{http://en.wikipedia.org/wiki/Single-page_application}
 
-[45] http://docs.angularjs.org/
+\bibitem{mongoose}
+  \emph{mongoose, elegant mongodb object modeling for node.js}.
+  \url{http://mongoosejs.com/}
 
-[46] http://kmalakoff.github.com/knockback/
+\bibitem{acekia}
+  \emph{Acekia, the missing test management tool}.
+  \url{http://acekia.com/}
 
+\bibitem{mongo}
+  \emph{mongoDB}.
+  \url{http://www.mongodb.org/}
 
+\bibitem{sandbox}
+  \emph{Sandbox (computer security)}.
+  \url{http://en.wikipedia.org/wiki/Sandbox_(computer_security)}
 
-[48] https://github.com/facundoolano/drymodels
+\bibitem{browserify}
+  \emph{browserify}.
+  \url{https://github.com/substack/node-browserify}
 
-[49] https://docs.google.com/document/d/14jvEphmMU-X22szfy1xyjX3of6eEq7ezoB_U6skHt9k/edit?usp=sharing
+\bibitem{require}
+  \emph{Require.js, a JavaScript module loader}.
+  \url{http://requirejs.org/}
 
-[50] http://en.wikipedia.org/wiki/Single-page_application
+\bibitem{nodemongo}
+  \emph{The Node.JS MongoDB Driver Manual}.
+  \url{http://mongodb.github.io/node-mongodb-native/}
 
-[51] http://mongoosejs.com/
+\bibitem{revalidator}
+  \emph{Revalidator}.
+  \url{https://github.com/flatiron/revalidator}
 
-[52] http://eviltrout.com/2013/06/15/ember-vs-angular.html
+\bibitem{git}
+  \emph{Git (software)}.
+  \url{http://en.wikipedia.org/wiki/Git_(software)}
 
-[53] http://stackoverflow.com/questions/tagged/knockout.js
+\bibitem{github}
+  \emph{Github}.
+  \url{https://github.com/}
 
-[54] http://stackoverflow.com/questions/tagged/ember.js
+\bibitem{invisible}
+  \emph{Invisible.js}.
+  \url{https://github.com/invisiblejs/invisible}
 
-[55] http://stackoverflow.com/questions/tagged/angularjs
+\bibitem{heroku}
+  \emph{Heroku, Cloud computing designed and built for developers}.
+  \url{https://www.heroku.com/}
 
-[56] http://docs.angularjs.org/guide/directive
+\bibitem{mongolab}
+  \emph{mongolab}.
+  \url{https://mongolab.com/welcome/}
 
-[57] http://acekia.com/
+\bibitem{mocha}
+  \emph{mocha}.
+  \url{http://visionmedia.github.io/mocha/}
 
-
-
-
-
-[1] https://docs.google.com/document/d/11Gz0CgrDWVyLb8NTw_dXv3D8PS8ewRkW4XWYlJma6nQ/edit?usp=sharing
-
-[2] http://en.wikipedia.org/wiki/Sandbox_(computer_security)
-
-[3] https://github.com/substack/node-browserify
-
-[4] http://requirejs.org/
-
-[5] http://mongoosejs.com/
-
-[6] http://www.mongodb.org/
-
-[7] http://socket.io/
-
-[8] Express http://expressjs.com/
-
-[9] The Node.JS MongoDB Driver Manual, http://mongodb.github.io/node-mongodb-native/
-
-[9] Revalidator, https://github.com/flatiron/revalidator
-
-[10] Git, http://en.wikipedia.org/wiki/Git_(software)
-
-[11] Github, https://github.com/
-
-[12] Invisible.js, https://github.com/sammla/invisible
-
-[13] Heroku, https://www.heroku.com/ 
-
-[14] Mongolab, https://mongolab.com/welcome/
-
-[15] Mocha, http://visionmedia.github.io/mocha/ 
-
-[16] Grunt, http://gruntjs.com/
-
-[17] Travis, https://travis-ci.org/
+\bibitem{travis}
+  \emph{Travis CI, Free Hosted Continuous Integration Platform for the Open Source Community}.
+  \url{https://travis-ci.org/}
 
 \end{thebibliography}
 

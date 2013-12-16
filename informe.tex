@@ -1,21 +1,132 @@
 
 \documentclass[doc,helv,longtable]{article}
 \usepackage[spanish]{babel}
+
 \usepackage[hidelinks]{hyperref}
+
+
+% \usepackage{palatino} % Esta es genial!
+% \linespread{1.05} % Palatino queda mejor con un poco más de interlineado.
+%\usepackage{times} % Times New Roman.
+
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{setspace}
 \usepackage{url}
 \usepackage[utf8]{inputenc}
 
+% Sarpadísima tipografía para listings y \texttt
+\usepackage{inconsolata}
+
+\usepackage{xcolor}
+
+% Para ejemplos de código.
+\usepackage{listings}
+\lstset{ 
+    % language=Prolog,    
+    basicstyle=\ttfamily\small, % Usa inconsolata
+    identifierstyle=\ttfamily,
+    keywordstyle=\color[rgb]{0,0,1},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{0.627,0.126,0.941},
+    morekeywords={true,false},
+    showstringspaces=false,     % No muestra underscores en los espacios de los strings.
+    backgroundcolor=\color{gray!10}, % Un color suave de fondo (menos chocante que el frame=single)
+    breaklines=true,            % Wrappea las lineas automáticamente.
+    numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+    numbersep=5pt,                   % how far the line-numbers are from the code
+    numberstyle=\tiny\color{gray},
+    belowskip=0pt               % Reduce el espacio entre un listing y el párrafo siguiente
+    %frame=single               % Un recuadro en los listings.
+}
+
+% Para tener cabecera y pie de página con un estilo personalizado.
+\usepackage{fancyhdr}
+
 \bibliographystyle{IEEEtran}
 
 \begin{document}
 
-\title{Informe TP Profesional - Invisible.js}
-\maketitle
+% Encabezado: sección a la derecha.
+% Pie de página: número de página a la derecha.
 
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{}{\thesection\ \ #1}}
+\lhead{}
+\chead{}
+\rhead{\rightmark}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage}
+
+% ---------------------- ~Encabezado y pie de página ----------------------
+
+\title{Informe TP Profesional - Invisible.js}
+% \maketitle
+
+% ------------------------------- Carátula --------------------------------
+
+\begin{titlepage}
+
+\thispagestyle{empty}
+
+% Logo facultad.
+\begin{center}
+\includegraphics[scale=0.55]{./fiuba}\\
+\textsc{\Large Universidad de Buenos Aires}\\[0.2cm]
+\textsc{\Large Facultad de Ingeniería}\\[1.5cm]
+
+% Título central.
+
+\textsc{\large Trabajo Profesional de Ingeniería en Informática} \\[0.3cm]
+% \textsc{\large Trabajo Práctico} \\[0.5cm]
+
+\rule{\linewidth}{0.5mm} \\[0.4cm]
+{\huge \bfseries Invisible.js} \\[0.3cm]
+% {\Large \bfseries Introducción al lenguaje y a la programación lógica}
+\rule{\linewidth}{0.5mm} \\ [2cm]
+
+% \vfill
+
+% Tabla de integrantes.
+\begin{flushleft}
+\Large\center\emph{Integrantes} \\[0.2cm]
+
+% Separación entre columnas.
+\begin{tabular}{lll}
+Martín Paulucci & 88509 & martin.c.paulucci@gmail.com \\
+Facundo Olano & 87712 & facundo.olano@gmail.com \\
+\end{tabular}
+\end{flushleft}
+
+\end{center}
+\end{titlepage}
+
+% ------------------------------- ~Carátula -------------------------------
+
+% -------------------------------- Índice ---------------------------------
+
+% Hago que las páginas se comiencen a contar a partir de aquí.
+\setcounter{page}{1}
+
+% Índice.
 \tableofcontents
+\newpage
+
+% -------------------------------- ~Índice --------------------------------
+
+% ----------------------------- Inicio del tp -----------------------------
+
+\clearpage  
+
+% Saca la indentación de los párrafos y añade un espacio entre cada uno.
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+% Luego del índice, links con color.
+\hypersetup{
+linkcolor=red
+}
 
 \section{Introducción}
 
@@ -349,24 +460,24 @@ Nos interesa entonces proveer alguna manera de definir validaciones en el modelo
 
 Para aplicar validaciones, el usuario del framework debe definir el atributo “validations” que sigue el esquema requerido por revalidator. Luego se extiende el modelo con el método validate, que será llamado antes de salvar el modelo, arrojando un error si el estado no es válido. Por ejemplo:
 
-\begin{verbatim}
+\begin{lstlisting}
 class Person
     constructor: (@name)->
     validations: 
         properties:
             name:
-                type: “string”
+                type: "string"
 
-Invisible.createModel(“Person”, Person)
+Invisible.createModel("Person", Person)
 
-person = new Invisible.Person(“John”)
+person = new Invisible.Person("John")
 person.validate() #returns {valid: true, errors: []}
 
 person.name = 5
 person.validate() 
 #returns {valid: false, errors: [{attribute: 'type', property: #'name', expected: 'string', actual: 'number', message: 'must be of string type'}]}}
 person.save() #throws error
-\end{verbatim}
+\end{lstlisting}
 
 Uno de los mayores avances de la actualidad en lo que a aplicaciones web se refiere el soporte a comunicación en tiempo real. La biblioteca por excelencia que implementa tiempo real en Node.js se llama socket.io. 
 
@@ -391,9 +502,11 @@ Otra de las cuestiones a tener en cuenta es que no todas las plataformas tienen 
 
 En el caso de Heroku, empezó a soportar WebSockets de forma experimental, y se puede activar corriendo el siguiente comando:
 
+\begin{verbatim}
 heroku labs:enable websockets
+\end{verbatim}
 
-La aplicación esta deplegada bajo la siguiente dirección: http://invisible-chat.herokuapp.com/
+La aplicación esta deplegada bajo la siguiente dirección: \url{http://invisible-chat.herokuapp.com/}
 
 \section{Desarrollo de una aplicación con Invisible.js}
 
@@ -402,7 +515,7 @@ Habiendo completado el desarrollo de la funcionalidad propuesta para el framewor
 
 Lo primero consiste en crear un proyecto node.js, para lo cual hay que crear un archivo llamado package.json el cual contiene la metainformación del proyecto y las dependencias necesarias. El nuestro se verá así:
 
-\begin{verbatim}
+\begin{lstlisting}
 {
   "name": "minimalChat",
   "version": "0.0.1",
@@ -415,13 +528,13 @@ Lo primero consiste en crear un proyecto node.js, para lo cual hay que crear un 
     "node": ">=0.8.0"
   }
 }
-\end{verbatim}
+\end{lstlisting}
 
 Nótese que todo proyecto necesita tener “invisible” y “express” como dependencias, para que el mismo pueda funcionar.
 
 Ahora podemos crear el servidor express, e integrar invisible. Para ello creamos el archivo server.coffee, el cual contiene la siguiente información:
 
-\begin{verbatim}
+\begin{lstlisting}
 express = require("express")
 http = require("http")
 path = require("path")
@@ -435,22 +548,22 @@ app.use(express.static(path.join(__dirname, "public")))
 
 invisible.createServer app, path.join(__dirname, "models"), {} , () ->
   console.log "Express server listening on port " + app.get("port")
-\end{verbatim}
+\end{lstlisting}
 
 Vemos que podemos crear nuestra aplicación llamando a la función express, y luego realizamos algunas configuraciones, como setear el puerto al cual el servidor escucha, definir que public va a ser la carpeta estática, entre otros.
 
 Lo más importante es la última línea: 
 
-\begin{verbatim}
+\begin{lstlisting}
 invisible.createServer app, path.join(__dirname, "models"), {} , () ->
   console.log "Express server listening on port " + app.get("port")
-\end{verbatim}
+\end{lstlisting}
 
 Acá estamos integrando invisible, especificando a su vez la ruta que va a contener nuestros modelos de dominio, en este caso, models. Esta función va a crear un servidor http convencional de node, pero va a agregar todas las configuraciones necesarias para hacer funcionar a Invisible.
 
 Luego se definen los modelos de dominio de la aplicación y se los registra con Invisible.js. Creamos un archivo message.coffee en la carpeta models.
 
-\begin{verbatim}
+\begin{lstlisting}
 Invisible = require("invisible")
 
 class Message
@@ -458,7 +571,7 @@ class Message
       @date = new Date()
 
 module.exports = Invisible.createModel("Message", Message)
-\end{verbatim}
+\end{lstlisting}
 
 Con esto basta para resolver la persistencia, autogenerar los controladores REST, publicar en tiempo real los eventos en los modelos. Todas estas tareas se realizarán de manera totalmente transparente para el programador. 
 
@@ -466,7 +579,7 @@ Con los pasos anteriores queda sentada casi en su totalidad la arquitectura de l
 
 La aplicación va a consistir en un único salón en el cual interactúan todos los usuarios, a los cuales se les asigna un nombre al azar. Nuestro código de cliente va a consistir entonces de un archivo index.html y otro app.coffee, ambos bajo el directorio public.
 
-\begin{verbatim}
+\begin{lstlisting}[language=html]
 <!doctype html>
   <head>
     <meta charset="utf-8">
@@ -500,19 +613,19 @@ La aplicación va a consistir en un único salón en el cual interactúan todos 
     <script src="app.js"></script>
   </body>
 </html>
-\end{verbatim}
+\end{lstlisting}
 
 Este es el archivo principal, el cual contiene las referencias a las distintas bibliotecas usadas. Es particularmente interesante la linea general la integración con Invisible:
 
-\begin{verbatim}
+\begin{lstlisting}[language=html]
 <script src="invisible.js"></script>
-\end{verbatim}
+\end{lstlisting}
 
 Solo con eso, todos nuestros modelos van a podes ser utilizados desde el cliente.
 
 Nuestro código Angular se va a limitar a:
 
-\begin{verbatim}
+\begin{lstlisting}
 angular.module('minimalChat', [])
 
 angular.module('minimalChat')
@@ -533,7 +646,7 @@ angular.module('minimalChat')
         $scope.$apply () ->
             if message.from != $scope.user
                 $scope.messages.push(message)
-\end{verbatim}
+\end{lstlisting}
 
 \section{Conclusiones}
 El presente trabajo resultó fructífero, en primer lugar por habernos dado la posibilidad de estudiar y aplicar tecnologías incipientes que marcan el rumbo del desarrollo web, y también por haber podido llevar adelante el desarrollo integral de un proyecto de software, aplicando los conocimientos adquiridos en el campo académico y profesional, desde una etapa intensa de investigación y evaluación de alternativas hasta un producto final. Vale remarcar a su vez que este producto superó las expectativas iniciales, teniendo valor en sí mismo. Nos interesa, en fin, realizar a modo de conclusión un balance del trabajo realizado y de las posibilidades de extenderlo en adelante.
@@ -665,7 +778,7 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
   \url{http://socket.io/}
 
 \bibitem{rest}
-  Leonard Richardson & Sam Ruby
+  Leonard Richardson and Sam Ruby
   \emph{RESTful Web Services}.
 
 \bibitem{template}

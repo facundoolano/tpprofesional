@@ -1,7 +1,7 @@
 
 \documentclass[doc,helv,longtable]{article}
 \usepackage[spanish]{babel}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{setspace}
@@ -23,9 +23,9 @@ A medida que avanzan las aplicaciones web, se pasó progresivamente de arquitect
 
 En la medida en que se requerían interfaces “ricas”\cite{rich}, actualizaciones en tiempo real, etc., aumentaron el tamaño y la complejidad del código del cliente. Se introdujeron entonces herramientas para resolver esta parte del problema\cite{richjs}: frameworks MVC, como backbone.js\cite{backbone}, para estructurar modelos en el cliente; MVVM, que facilita construir vistas responsivas a eventos, como lo hace knockout.js\cite{knockout}, etc. Todas estas arquitecturas se suelen agrupar como MV*\cite{mvw}.
 
-Es fácil ver el problema de mantener dos estructuras de este estilo en paralelo en el cliente y el servidor. Por ejemplo, el programador tiene que cambiar de lenguaje al pasar de uno a otro, casi forzosamente hay duplicación de comportamiento entre los modelos en cada lado, un trabajo engorroso para manipular el DOM de las páginas para reflejar el estado en el servidor, no siempre se pueden reutilizar las plantillas (templates) con las que se arman las páginas, etc.\cite{wdsucks}
+Es fácil ver el problema de mantener dos estructuras de este estilo en paralelo en el cliente y el servidor. Por ejemplo, el programador tiene que cambiar de lenguaje al pasar de uno a otro, casi forzosamente hay duplicación de comportamiento entre los modelos en cada lado, un trabajo engorroso para manipular el DOM de las páginas para reflejar el estado en el servidor, no siempre se pueden reutilizar las plantillas (templates) con las que se arman las páginas, etc.\cite{wdsucks}
 
-De aquí que resulte de interés encontrar la manera, no solo de sincronizar el estado, sino de reutilizar las definiciones de modelo, validaciones, etc., que hoy en día es casi forzoso duplicar. El objetivo de este Trabajo Profesional es construir una plataforma sobre la que el programador pueda solucionar esos problemas, reduciendo al mínimo la distinción que debe hacer entre el código de cliente y el de servidor. Una serie de recientes desarrollos hacen viable acercar esta meta, cuando no alcanzarla por completo. Es deseable:
+De aquí que resulte de interés encontrar la manera, no solo de sincronizar el estado, sino de reutilizar las definiciones de modelo, validaciones, etc., que hoy en día es casi forzoso duplicar. El objetivo de este Trabajo Profesional es construir una plataforma sobre la que el programador pueda solucionar esos problemas, reduciendo al mínimo la distinción que debe hacer entre el código de cliente y el de servidor. Una serie de recientes desarrollos hacen viable acercar esta meta, cuando no alcanzarla por completo. Es deseable:
 
 
 \begin{itemize}
@@ -42,7 +42,7 @@ La primera parte del trabajo, entonces, consistirá en obtener ese conocimiento.
 
 De acuerdo a los resultados de este proceso, el resto del trabajo consistirá en:
 \begin{itemize}
-\item  Combinar, extender y/o completar los frameworks y tecnologías disponibles, implementando lo que sea necesario para alcanzar el mínimo grado de completitud esperado en un framework web.  
+\item  Combinar, extender y/o completar los frameworks y tecnologías disponibles, implementando lo que sea necesario para alcanzar el mínimo grado de completitud esperado en un framework web.  
 \item  Desarrollar una aplicación de prueba en el framework resultante.
 
 \end{itemize}
@@ -54,9 +54,9 @@ Por la naturaleza del trabajo propuesto, necesariamente se va a utilizar como le
 
 CoffeeScript es un lenguaje que compila a JavaScript (siguiendo fuertes convenciones de buenas prácticas para este lenguaje) y que pretende ocultar muchos de los inconvenientes de diseño mencionados, a la vez que presenta una sintaxis más expresiva (cercana a Python o Ruby). Todo esto lo convierte en una opción interesante, pero hay que sopesar las desventajas que acarrea: 
 \begin{itemize}
-\item  Como los browsers no interpretan CoffeeScript, el código escrito en este lenguaje que sea usado en el cliente tiene que ser previamente compilado a JavaScript. De esta forma  se agrega un paso adicional al ciclo de desarrollo. Sin embargo, hoy en día existen varias herramientas que facilitan los procesos de desarrollo, como Grunt\cite{grunt}.
+\item  Como los browsers no interpretan CoffeeScript, el código escrito en este lenguaje que sea usado en el cliente tiene que ser previamente compilado a JavaScript. De esta forma  se agrega un paso adicional al ciclo de desarrollo. Sin embargo, hoy en día existen varias herramientas que facilitan los procesos de desarrollo, como Grunt\cite{grunt}.
 \item  El código que se ejecuta finalmente es JavaScript, por lo tanto a la hora de debuggear, no va a estar disponible el código original sino el compilado. Este problema se puede solucionar con la utilización de Source Maps\cite{sourcemaps}.
-\item  Podría resultar una mala decisión de diseño para una plataforma el imponer el uso de un lenguaje no convencional. 
+\item  Podría resultar una mala decisión de diseño para una plataforma el imponer el uso de un lenguaje no convencional. 
 
 \end{itemize}
 
@@ -66,7 +66,7 @@ El protocolo HTTP tiene una arquitectura Cliente-Servidor. Esto es, el método d
 Como el presente trabajo se propone desarrollar una plataforma en la que el programador pueda desentenderse de la diferencia entre cliente y servidor, se hace necesario que implemente la comunicación Servidor-Cliente en forma transparente al código de aplicación. Nótese que no es el objetivo del proyecto encontrar una solución general o ideal para este problema, si no aplicar las ya disponibles de la manera más simple para obtener el efecto deseado.
 
 \subsubsection{Long-polling}
-Long-Polling o Server Push\cite{longpolling} son nombres que se le dan comúnmente a la técnica de simular el envío de información desde el servidor al cliente que consiste en que el Cliente envíe un request asincrónico al Servidor, y que éste retenga la respuesta abierta hasta que tenga información que enviar. Se trata de un método ineficiente e inelegante, si bien la única opción disponible hasta hace poco.
+Long-Polling o Server Push\cite{longpolling} son nombres que se le dan comúnmente a la técnica de simular el envío de información desde el servidor al cliente que consiste en que el Cliente envíe un request asincrónico al Servidor, y que éste retenga la respuesta abierta hasta que tenga información que enviar. Se trata de un método ineficiente e inelegante, si bien la única opción disponible hasta hace poco.
 
 \subsubsection{WebSockets}
 La especificación de WebSockets presenta una API para establecer conexiones bidireccionales entre servidor y cliente, mucho más eficientes que las de HTTP\cite{websockets}. Es una tecnología de desarrollo reciente, y aún no está soportada por todos los browsers, y, al utilizar un protocolo distinto a HTTP, requiere mayor configuración y software específico en el servidor.
@@ -127,9 +127,9 @@ La filosofía de desarrollo de Node.js, y por extensión de las aplicaciones que
 Los frameworks o bibliotecas con motivaciones similares a la del presente trabajo, están desarrollados en Node.js, si bien en su mayoría no están todavía en condiciones de ser usados en producción\cite{nodeodd}\cite{nodefws}.
 
 \subsubsection{Express}
-Express\cite{express} es un framework web minimalista, de los más populares y robustos de Node.js.  Express es impone pocas restricciones y deja la mayoría de las decisiones (y su implementación) al programador\cite{nodefws}. Esto lo hace muy flexible, acoplándose bien a la filosofía descrita anteriormente: existen muchos módulos para extender su funcionalidad básica. De esta forma, una buena forma de construir una plataforma web para Node.js es partir de Express y extenderlo con un set de módulos independientes; así lo hacen Derby y Tower.js\cite{tower}.
+Express\cite{express} es un framework web minimalista, de los más populares y robustos de Node.js.  Express es impone pocas restricciones y deja la mayoría de las decisiones (y su implementación) al programador\cite{nodefws}. Esto lo hace muy flexible, acoplándose bien a la filosofía descrita anteriormente: existen muchos módulos para extender su funcionalidad básica. De esta forma, una buena forma de construir una plataforma web para Node.js es partir de Express y extenderlo con un set de módulos independientes; así lo hacen Derby y Tower.js\cite{tower}.
 
-\subsubsection{Derby y Meteor}
+\subsubsection{Derby y Meteor}
 Derby es un framework para construir aplicaciones en tiempo real, que funcionen tanto en el browser como en Node.js. Se propone como una solución al desorden acarreado al agregar dinamismo a aplicaciones clásicas MVC, y la duplicación implícita al incluir una estructura MVC en cliente\cite{derby}. La documentación y el grado de desarrollo del proyecto son limitados\cite{nodefws}.
 
 Meteor\cite{meteor} tiene muchos puntos en común con Derby, si bien con un enfoque distinto: mientras que Derby hace hincapié en las aplicaciones en tiempo real, Meteor busca ser una plataforma de uso general, aplicable a la mayoría de los sitios en la web\cite{derbymeteor}. Otras diferencias son que tiene más exposición y mayor documentación que Derby\cite{derbyrant1} y una tendencia a ser una plataforma cerrada\cite{derbyrant2}.
@@ -201,7 +201,7 @@ Al llevar a la práctica esta idea se encontró un problema de incompatibilidad 
 
 De esta forma, este prototipo nos da la noción de que si bien el uso de Node.js habilita la posibilidad de reutilizar código en cliente y servidor, efectivizar tal posibilidad no es una tarea trivial, y que la ganancia no justifica el costo de su implementación para el caso promedio. Por lo tanto esta es una tarea que sólo tendría sentido ser resuelta por una biblioteca específica, que abstraiga toda esa complejidad.
 
-\subsection{Node.js + Angular + CoffeeScript}
+\subsection{Node.js + Angular + CoffeeScript}
 En el marco laboral se está desarrollando una aplicación\cite{acekia} utilizando varias tecnologías antes mencionadas. Es una aplicación de tipo SPA\cite{spa}, que utiliza AngularJS como frontend y Node.js (Express) como backend, el cual provee una API Rest. Como base de datos se utiliza MongoDB\cite{mongo}. En cuanto al lenguaje de programación, se utiliza CoffeeScript. 
 
 Acekia es una herramienta para administración de casos de prueba, y conjuntos de pruebas, hitos, y corridas de tests. Además provee distintas métricas y gráficos. La herramienta está dirigida a los analistas o ingenieros en QA y QC.
@@ -235,12 +235,12 @@ En base a las conclusiones anteriores, establecemos la dirección que tendrá el
 
 De acuerdo a los objetivos anteriores, se proponen las siguientes iteraciones, cada una con objetivos parciales, a fin de desarrollar incrementalmente la plataforma:
 \begin{itemize}
-\item  Reutilización modelos. El objetivo será lograr que un objeto JavaScript con atributos y métodos, posiblemente dependientes de código externo, estén disponibles y funcionen correctamente en el cliente. Para esto es necesario estudiar alternativas de sandboxing\cite{sandbox} y las librerías disponibles para emular la funcionalidad del servidor en el cliente (por ejemplo browserify\cite{browserify} o requirejs\cite{require}).
-\item  Persistencia. Se intentará proveer una interfaz básica en el modelo para guardar, eliminar, buscar, etc. sobre un medio de persistencia. Se estudiará la posibilidad de integrarlo directamente con mongoose o crear una capa de persistencia sobre el driver de MongoDB si esto resulta más práctico.
-\item  API REST. Esto incluye generar una API REST en el servidor automáticamente al definir un modelo e implementar métodos del modelo que la llamen automáticamente en el cliente cuando se deba interactuar con la base de datos.
+\item  Reutilización modelos. El objetivo será lograr que un objeto JavaScript con atributos y métodos, posiblemente dependientes de código externo, estén disponibles y funcionen correctamente en el cliente. Para esto es necesario estudiar alternativas de sandboxing\cite{sandbox} y las librerías disponibles para emular la funcionalidad del servidor en el cliente (por ejemplo browserify\cite{browserify} o requirejs\cite{require}).
+\item  Persistencia. Se intentará proveer una interfaz básica en el modelo para guardar, eliminar, buscar, etc. sobre un medio de persistencia. Se estudiará la posibilidad de integrarlo directamente con mongoose o crear una capa de persistencia sobre el driver de MongoDB si esto resulta más práctico.
+\item  API REST. Esto incluye generar una API REST en el servidor automáticamente al definir un modelo e implementar métodos del modelo que la llamen automáticamente en el cliente cuando se deba interactuar con la base de datos.
 \item  Extensión de la API. Se considerará la posibilidad de proveer más funcionalidad y personalización a la definición de la API.
-\item  Extensión de la persistencia. Se considerará la posibilidad de implementar interacciones más complejas con la base de datos.
-\item  Sincronización automática. Se considerará la posibilidad de utilizar socket.io para propagar automáticamente desde el servidor los cambios que se realizan sobre el modelo.
+\item  Extensión de la persistencia. Se considerará la posibilidad de implementar interacciones más complejas con la base de datos.
+\item  Sincronización automática. Se considerará la posibilidad de utilizar socket.io para propagar automáticamente desde el servidor los cambios que se realizan sobre el modelo.
 \item  Aplicación de ejemplo.
 
 \end{itemize}
@@ -252,8 +252,8 @@ El objetivo esencial del framework es poder reutilizar código tanto en el servi
 
 
 \begin{itemize}
-\item  JavaScript en el browser no posee un sistema de módulos, y node.js sí. Por lo tanto, al trabajar con módulos en node, éstos van a ser incompatibles en el browser.  
-\item  Las variables globales difieren. En el cliente, una variable global es asignada al objeto window, y en node.js al objeto global. Además, cada plataforma tiene variables globales específicas, como document, location, history en el caso del cliente, o \_\_dir, proc en el caso del servidor.
+\item  JavaScript en el browser no posee un sistema de módulos, y node.js sí. Por lo tanto, al trabajar con módulos en node, éstos van a ser incompatibles en el browser.  
+\item  Las variables globales difieren. En el cliente, una variable global es asignada al objeto window, y en node.js al objeto global. Además, cada plataforma tiene variables globales específicas, como document, location, history en el caso del cliente, o \_\_dir, proc en el caso del servidor.
 
 \end{itemize}
 
@@ -268,7 +268,7 @@ Express.js es el framework Web utilizado en la herramienta. Gracias a su estruct
 
 El funcionamiento de Express se asemeja a los pipes de UNIX, en los cuales se concatenan distintos programas, los cuales poseen una entrada y una salida, y los datos a procesar se van pasando secuencialmente de un programa a otro. En Express, los datos en cuestión son el request y el response HTTP, y cada programa se llama middleware.
 
-Como ejemplo, en Express existe un middleware que se encarga de proveer los archivos estáticos, a saber, los de extensión html, css, y js vinculados al cliente.  
+Como ejemplo, en Express existe un middleware que se encarga de proveer los archivos estáticos, a saber, los de extensión html, css, y js vinculados al cliente.  
 
 Invisible.js es un middleware más que se encarga de varias tareas:
 \begin{itemize}
@@ -301,7 +301,7 @@ La siguiente figura ilustra la intervención de los distintos componentes en la 
 
 \begin{figure}[tb]
 \begin{center}
-\includegraphics[width=1\columnwidth]{}
+\includegraphics[width=1\columnwidth]{tpprof1.png}
 \caption{Secuencia de llamados para un método en el cliente}
 
 \end{center}
@@ -309,7 +309,7 @@ La siguiente figura ilustra la intervención de los distintos componentes en la 
 
 \subsection{Tercera iteración}
 \subsubsection{Repositorio público}
-El código fuente se maneja con el sistema de control de versiones distribuido Git\cite{git}, a través del sitio Github\cite{github}. Este sitio favorece a sus usuarios en la tarea del desarrollo colaborativo, proveyendo herramientas online para realizar forks y pull requests, reportar bugs, proponer mejoras, etc., siendo el medio estándar para desarrollo del movimiento Open Source en la actualidad. A fin de de habilitar la futura difusión del proyecto, se comenzó a escribir su documentación pública en la portada del proyecto en ese sitio\cite{invisible}. Se planea extender esta documentación en las iteraciones subsiguientes.
+El código fuente se maneja con el sistema de control de versiones distribuido Git\cite{git}, a través del sitio Github\cite{github}. Este sitio favorece a sus usuarios en la tarea del desarrollo colaborativo, proveyendo herramientas online para realizar forks y pull requests, reportar bugs, proponer mejoras, etc., siendo el medio estándar para desarrollo del movimiento Open Source en la actualidad. A fin de de habilitar la futura difusión del proyecto, se comenzó a escribir su documentación pública en la portada del proyecto en ese sitio\cite{invisible}. Se planea extender esta documentación en las iteraciones subsiguientes.
 
 También se registró el proyecto en npm, el gestor de paquetes de Node.js, facilitando la instalación del framework en cualquier proyecto Node.js que quiera utilizarlo, siguiendo las prácticas habituales de la comunidad.
 
@@ -320,13 +320,13 @@ Para cumplir estos objetivos, se utilizaron varias herramientas:
 \begin{itemize}
 \item  Mocha\cite{mocha}: Se trata de un framework de testing flexible y poderoso. Permite escribir tests utilizando la metodología BDD (Desarrollo basado en comportamiento), que es una extensión de TDD (Desarrollo basado en Tests), pero en el cual se incentiva que los test sean descritos de una forma particular. El framework va a ejecutar todos los tests y mostrar un informe en pantalla de con las ejecuciones que fueron exitosas, y también las que fallaron (en este último caso, nos va a proporcionar más información, como por ejemplo el nombre de la excepción que fue lanzada, o la aserción incorrecta).
 \item  Grunt\cite{grunt}: Se trata de una herramienta de uso general para ejecución de tareas en JavaScript. Su objetivo es automatizar en mayor medida el ciclo de desarrollo de un proyecto. Nosotros lo usamos, entre otras cosas, para ejecutar los tests de mocha automáticamente en el momento que se hace un cambio local.
-\item  Travis\cite{travis}: Es trata de un servicio de Integración Continua (CI) especialmente útil ya que tiene integración con Github. Cada vez que alguien proponga un cambio de código en nuestro servidor (un pull request), el servicio va a levantar un servidor con el código propuesto, correr todos los tests, e informar si el cambio propuesto es seguro (es decir, se pasó todos los tests exitosamente).  
+\item  Travis\cite{travis}: Es trata de un servicio de Integración Continua (CI) especialmente útil ya que tiene integración con Github. Cada vez que alguien proponga un cambio de código en nuestro servidor (un pull request), el servicio va a levantar un servidor con el código propuesto, correr todos los tests, e informar si el cambio propuesto es seguro (es decir, se pasó todos los tests exitosamente).  
 
 \end{itemize}
 \subsubsection{Diseño de la aplicación de ejemplo}
 Habiéndose sentado las bases del framework, se hace necesario para extenderlo y corregirlo, basarse en su utilización en un sistema real. Para ello, en esta iteración comenzamos a planificar una aplicación de ejemplo que se adecúe a tal fin.
 
-En primera instancia se consideró implementar una aplicación de gestión de casos de prueba, similar a la  trabajada en el marco laboral, según se documentó en la etapa de prototipos. Sin embargo se descartó esta idea, por representar un tamaño de trabajo demasiado amplio que cubrir, con un aprovechamiento limitado de las características del framework.
+En primera instancia se consideró implementar una aplicación de gestión de casos de prueba, similar a la  trabajada en el marco laboral, según se documentó en la etapa de prototipos. Sin embargo se descartó esta idea, por representar un tamaño de trabajo demasiado amplio que cubrir, con un aprovechamiento limitado de las características del framework.
 
 Se optó, en cambio, por implementar una aplicación de chat, con manejo de usuarios, contactos y “salones”. La ventaja de este tipo de sistema es que su tamaño es reducido, sin demasiado diseño gráfico, y con mucha dinamicidad. El hecho de que se manejen usuarios agrega un componente de formularios y validaciones que interesa estudiar en el proyecto.
 
@@ -351,30 +351,21 @@ Para aplicar validaciones, el usuario del framework debe definir el atributo “
 
 \begin{verbatim}
 class Person
-
-        constructor: (@name)->
-
-        validations: 
-
-                properties:
-
-                        name:
-
-                                type: “string”
+    constructor: (@name)->
+    validations: 
+        properties:
+            name:
+                type: “string”
 
 Invisible.createModel(“Person”, Person)
 
 person = new Invisible.Person(“John”)
-
 person.validate() #returns {valid: true, errors: []}
 
 person.name = 5
-
 person.validate() 
-
-#returns {valid: false, errors: [{attribute: type, property: #name, expected: string, actual: number, message: must be of string type}]}}
-
-person.save() #throws error\subsubsection{Comunicación en tiempo real}
+#returns {valid: false, errors: [{attribute: 'type', property: #'name', expected: 'string', actual: 'number', message: 'must be of string type'}]}}
+person.save() #throws error
 \end{verbatim}
 
 Uno de los mayores avances de la actualidad en lo que a aplicaciones web se refiere el soporte a comunicación en tiempo real. La biblioteca por excelencia que implementa tiempo real en Node.js se llama socket.io. 
@@ -383,7 +374,7 @@ En el caso de que uno quiera agregarle funcionalidad de tiempo real a su aplicac
 
 
 \begin{itemize}
-\item  Model.onNew: Este método se va a ejecutar cuando se guarde en la base de datos una nueva instancia de la clase Model. Devuelve la instancia creada en la función callback.
+\item  Model.onNew: Este método se va a ejecutar cuando se guarde en la base de datos una nueva instancia de la clase Model. Devuelve la instancia creada en la función callback.
 \item  Model.update: Este método se va a ejecutar cada vez que una instancia sea modificada. Devuelve la instancia modificada en la función callback.
 \item  Model.delete: Este método se va a ejecutar cada vez que una instancia sea eliminada. Devuelve la instancia eliminada en la función callback.
 
@@ -413,27 +404,16 @@ Lo primero consiste en crear un proyecto node.js, para lo cual hay que crear un 
 
 \begin{verbatim}
 {
-
-  ``name'': ``minimalChat'',
-
-  ``version'': ``0.0.1'',
-
-  ``dependencies'': {
-
-    ``invisible'': ``*'',
-
-    ``coffee-script'': ``~1.6.3'',
-
-    ``express'': ``~3.3.4''
-
-  },
-
-  ``engines'': {
-
-    ``node'': ``>=0.8.0''
-
-  }
-
+  "name": "minimalChat",
+  "version": "0.0.1",
+  "dependencies": {
+    "invisible": "*",
+    "coffee-script": "~1.6.3",
+    "express": "~3.3.4"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
 }
 \end{verbatim}
 
@@ -442,27 +422,19 @@ Nótese que todo proyecto necesita tener “invisible” y “express” como de
 Ahora podemos crear el servidor express, e integrar invisible. Para ello creamos el archivo server.coffee, el cual contiene la siguiente información:
 
 \begin{verbatim}
-express = require(``express'')
-
-http = require(``http'')
-
-path = require(``path'')
-
-invisible = require(``invisible'')
-
+express = require("express")
+http = require("http")
+path = require("path")
+invisible = require("invisible")
 app = express()
 
-app.set(``port'', 3000)
-
+app.set("port", 3000)
 app.use(express.bodyParser())
-
 app.use(app.router)
+app.use(express.static(path.join(__dirname, "public")))
 
-app.use(express.static(path.join(__dirname, ``public'')))
-
-invisible.createServer app, path.join(__dirname, ``models''), {} , () ->
-
-  console.log ``Express server listening on port '' + app.get(``port'')
+invisible.createServer app, path.join(__dirname, "models"), {} , () ->
+  console.log "Express server listening on port " + app.get("port")
 \end{verbatim}
 
 Vemos que podemos crear nuestra aplicación llamando a la función express, y luego realizamos algunas configuraciones, como setear el puerto al cual el servidor escucha, definir que public va a ser la carpeta estática, entre otros.
@@ -470,9 +442,8 @@ Vemos que podemos crear nuestra aplicación llamando a la función express, y lu
 Lo más importante es la última línea: 
 
 \begin{verbatim}
-invisible.createServer app, path.join(__dirname, ``models''), {} , () ->
-
-  console.log ``Express server listening on port '' + app.get(``port'')
+invisible.createServer app, path.join(__dirname, "models"), {} , () ->
+  console.log "Express server listening on port " + app.get("port")
 \end{verbatim}
 
 Acá estamos integrando invisible, especificando a su vez la ruta que va a contener nuestros modelos de dominio, en este caso, models. Esta función va a crear un servidor http convencional de node, pero va a agregar todas las configuraciones necesarias para hacer funcionar a Invisible.
@@ -480,15 +451,13 @@ Acá estamos integrando invisible, especificando a su vez la ruta que va a conte
 Luego se definen los modelos de dominio de la aplicación y se los registra con Invisible.js. Creamos un archivo message.coffee en la carpeta models.
 
 \begin{verbatim}
-Invisible = require(``invisible'')
+Invisible = require("invisible")
 
 class Message
+    constructor: (@from, @body) ->
+      @date = new Date()
 
-    constructor: (@from, @body) ->
-
-      @date = new Date()
-
-module.exports = Invisible.createModel(``Message'', Message)
+module.exports = Invisible.createModel("Message", Message)
 \end{verbatim}
 
 Con esto basta para resolver la persistencia, autogenerar los controladores REST, publicar en tiempo real los eventos en los modelos. Todas estas tareas se realizarán de manera totalmente transparente para el programador. 
@@ -499,74 +468,44 @@ La aplicación va a consistir en un único salón en el cual interactúan todos 
 
 \begin{verbatim}
 <!doctype html>
+  <head>
+    <meta charset="utf-8">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body ng-app="minimalChat">
+    <div class="container" ng-controller="MainCtrl">
+      <div class="col-md-8" style="margin-top: 30px;">
+        <div class="well well-lg" id="message-list"> 
+          <div ng-repeat="message in messages">
+            <div class="message-body">
+              <small><b ng-bind="message.from"></b></small><small class="pull-right text-muted" ng-bind="message.date|date:'short'"></small><br/>
+            </div>
+            <div>
+              <small ng-bind="message.body"></small>
+            </div>
+          </div>
+        </div>
+        <form ng-submit="enterMessage()" class="chat" novalidate>
+          <div class="form-group">
+            <input type="text" class="form-control chat-input" ng-model="message" required placeholder="Enter message" autofocus>
+          </div>    
+        </form>
+      </div>
+    </div>
 
-  <head>
-
-    <meta charset=``utf-8''>
-
-    <link href=``//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css'' rel=``stylesheet''>
-
-  </head>
-
-  <body ng-app=``minimalChat''>
-
-    <div class=``container'' ng-controller=``MainCtrl''>
-
-      <div class=``col-md-8'' style=``margin-top: 30px;''>
-
-        <div class=``well well-lg'' id=``message-list''> 
-
-          <div ng-repeat=``message in messages''>
-
-            <div class=``message-body''>
-
-              <small><b ng-bind=``message.from''></b></small><small class=``pull-right text-muted'' ng-bind=``message.date|date:short''></small><br/>
-
-            </div>
-
-            <div>
-
-              <small ng-bind=``message.body''></small>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <form ng-submit=``enterMessage()'' class=``chat'' novalidate>
-
-          <div class=``form-group''>
-
-            <input type=``text'' class=``form-control chat-input'' ng-model=``message'' required placeholder=``Enter message'' autofocus>
-
-          </div>    
-
-        </form>
-
-      </div>
-
-    </div>
-
-    <script src=``http://code.jquery.com/jquery-1.10.1.min.js''></script>
-
-    <script src=``//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js''></script>
-
-    <script src=``https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js''></script>
-
-    <script src=``invisible.js''></script>
-
-    <script src=``app.js''></script>
-
-  </body>
-
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+    <script src="invisible.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
 \end{verbatim}
 
 Este es el archivo principal, el cual contiene las referencias a las distintas bibliotecas usadas. Es particularmente interesante la linea general la integración con Invisible:
 
 \begin{verbatim}
-<script src=``invisible.js''></script>
+<script src="invisible.js"></script>
 \end{verbatim}
 
 Solo con eso, todos nuestros modelos van a podes ser utilizados desde el cliente.
@@ -574,35 +513,26 @@ Solo con eso, todos nuestros modelos van a podes ser utilizados desde el cliente
 Nuestro código Angular se va a limitar a:
 
 \begin{verbatim}
-angular.module(minimalChat, [])
+angular.module('minimalChat', [])
 
-angular.module(minimalChat)
+angular.module('minimalChat')
+  .controller 'MainCtrl', ($scope) ->
 
-  .controller MainCtrl, ($scope) ->
+    $scope.user = "user-" + Math.floor(Math.random()*1000)
 
-    $scope.user = ``user-'' + Math.floor(Math.random()*1000)
+    $scope.messages = []
+    $scope.message = ''
 
-    $scope.messages = []
+    $scope.enterMessage = () ->
+        message = new Invisible.Message($scope.user, $scope.message)
+        message.save (err, res) -> return
+        $scope.message = ''
+        $scope.messages.push(message)
 
-    $scope.message = 
-
-    $scope.enterMessage = () ->
-
-        message = new Invisible.Message($scope.user, $scope.message)
-
-        message.save (err, res) -> return
-
-        $scope.message = 
-
-        $scope.messages.push(message)
-
-    Invisible.Message.onNew (message)->
-
-        $scope.$apply () ->
-
-            if message.from != $scope.user
-
-                $scope.messages.push(message)
+    Invisible.Message.onNew (message)->
+        $scope.$apply () ->
+            if message.from != $scope.user
+                $scope.messages.push(message)
 \end{verbatim}
 
 \section{Conclusiones}
@@ -623,11 +553,15 @@ La arquitectura de Invisible.js prioriza la construcción de APIs REST en el ser
 
 Como se dijo, para construir un entorno completo de desarrollo usando Invisible.js, se lo debe complementar con algún framework MVC en el cliente, que no imponga mayores restricciones sobre los modelos que utiliza. Por esto, y porque lo consideramos el mejor disponible, en general elegimos Angular.js para esta tarea. Si bien los resultados fueron satisfactorios, existe la posibilidad de realizar esta integración más elegantemente, para aprovechar mejor las características de ambas herramientas. Por ejemplo, para unificar los criterios para implementar validaciones, y para que los modelos de Invisible.js actúen transparentemente sobre el motor de Angular.js.
 
-En cuanto a la utilidad de Invisible.js más allá de la propuesta inicial, como se desprende del tutorial anterior, hay varios puntos que lo hacen una herramienta interesante. Como se indicó, no solo se evita la duplicación de código, sino que un buen porcentaje del desarrollo clásico deja de ser necesario gracias a la funcionalidad autogenerada, al punto que casi no existe código en el servidor. El ciclo de desarrollo consiste más bien en definir los modelos con los que se va a trabajar y utilizarlos en el cliente, según lo requiera la aplicación y el framework que se utilice en ese ambiente. En particular, la sencillez con la que se trabaja con actualizaciones en tiempo real hace que aplicaciones antes engorrosas se vuelvan triviales de implementar con Invisible.js.
+En cuanto a la utilidad de Invisible.js más allá de la propuesta inicial, como se desprende del tutorial anterior, hay varios puntos que lo hacen una herramienta interesante. Como se indicó, no solo se evita la duplicación de código, sino que un buen porcentaje del desarrollo clásico deja de ser necesario gracias a la funcionalidad autogenerada, al punto que casi no existe código en el servidor. El ciclo de desarrollo consiste más bien en definir los modelos con los que se va a trabajar y utilizarlos en el cliente, según lo requiera la aplicación y el framework que se utilice en ese ambiente. En particular, la sencillez con la que se trabaja con actualizaciones en tiempo real hace que aplicaciones antes engorrosas se vuelvan triviales de implementar con Invisible.js.
 
 Es necesario aún evaluar cuán escalable es la arquitectura propuesta por Invisible.js, así como su implementación actual. Esto se refiere tanto a cómo soporta exigencias de recursos ( usuarios concurrentes, grandes volúmenes de datos) como a la manera en que se adapta al crecimiento de los proyectos que la aplican. En este sentido, sería también interesante estudiar maneras de realizar módulos reusables que usen la plataforma.
 
-Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar a Invisible.js como una herramienta viable de ser utilizada más allá del ambiente académico o las pruebas de concepto, es el de las medidas de seguridad. En la actual implementación, no hay manera de restringir el acceso a los datos a usuarios autorizados: no hay autenticación ni protección de los datos, bastando abrir una consola en el browser para acceder y hasta destruir todos los datos. De igual manera el acceso a los eventos relacionados a los modelos no está restringido.\section{Glosario}
+Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar a Invisible.js como una herramienta viable de ser utilizada más allá del ambiente académico o las pruebas de concepto, es el de las medidas de seguridad. En la actual implementación, no hay manera de restringir el acceso a los datos a usuarios autorizados: no hay autenticación ni protección de los datos, bastando abrir una consola en el browser para acceder y hasta destruir todos los datos. De igual manera el acceso a los eventos relacionados a los modelos no está restringido.
+
+\newpage
+
+\section*{Glosario}
 
 \begin{itemize}
 \item  CGI: Common Gateway Interface. Método usado por los web servers para delegar la generación del contenido de las páginas a un archivo ejecutable.
@@ -637,6 +571,8 @@ Otro aspecto que requiere trabajo futuro, y el que impide actualmente considerar
 \item  MVVM: Model-View-ViewModel. Derivativo del patrón MVC, que facilita el desarrollo de interfaces gráficas responsivas a eventos.
 
 \end{itemize}
+
+\newpage
 
 \begin{thebibliography}{150}
 

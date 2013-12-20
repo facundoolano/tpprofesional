@@ -13,12 +13,32 @@
 \usepackage{graphicx}
 
 \usepackage{color}
+\usepackage{inconsolata}
+
+\usepackage{xcolor}
+
 \usepackage{listings}
-\lstset{ %
-language=Prolog,            % choose the language of the code
-breaklines=true,            % sets automatic line breaking
-frame=single,               % Add a frame to listings.
-basicstyle=\footnotesize,   % Font size.
+% \lstset{ %
+% breaklines=true,            % sets automatic line breaking
+% frame=single,               % Add a frame to listings.
+% basicstyle=\footnotesize,   % Font size.
+% }
+\lstset{ 
+    % language=Prolog,    
+    basicstyle=\ttfamily\small, % Usa inconsolata
+    identifierstyle=\ttfamily,
+    keywordstyle=\color[rgb]{0,0,1},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{0.627,0.126,0.941},
+    morekeywords={true,false},
+    showstringspaces=false,     % No muestra underscores en los espacios de los strings.
+    backgroundcolor=\color{gray!10}, % Un color suave de fondo (menos chocante que el frame=single)
+    breaklines=true,            % Wrappea las lineas automáticamente.
+    % numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+    % numbersep=5pt,                   % how far the line-numbers are from the code
+    % numberstyle=\tiny\color{gray},
+    belowskip=0pt               % Reduce el espacio entre un listing y el párrafo siguiente
+    %frame=single               % Un recuadro en los listings.
 }
 
 \usepackage[absolute,overlay]{textpos}
@@ -55,25 +75,71 @@ Facundo Olano
     \end{center}
 \end{frame}
 
+
 \begin{frame}{Programación Web: Prehistoria}
-    \begin{center}
-        \includegraphics[width=\textwidth]{img/prehistoria.png}
-    \end{center}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{itemize}
+                \item Páginas estáticas
+                \item CGI Scripts
+                \item Aplicaciones tradicionales (Java, PHP)
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{img/prehistoria.png}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
+
 \begin{frame}{Programación Web: Historia}
-    \begin{center}
-        \includegraphics[width=\textwidth]{img/historia.png}
-    \end{center}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{img/historia.png}
+            \end{center}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item Frameworks MVC (Rails, Django, Cake)
+                \item Interfaces amigables (JavaScript)
+                \item Interfaces dinámicas (JQuery, AJAX)
+            \end{itemize}
+        \end{column}
+    \end{columns}
+
 \end{frame}
 
 \begin{frame}{Programación Web: Actualidad}
-    \begin{center}
-        \includegraphics[width=\textwidth]{img/actualidad.png}
-    \end{center}
+
+\begin{columns}
+    \begin{column}{0.4\textwidth}
+        \begin{itemize}
+            \item HTML5, Realtime
+            \item Backbone
+            \item MVVM: Knockout, Angular
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.6\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{img/actualidad.png}
+        \end{center}
+    \end{column}
+\end{columns}
+
 \end{frame}
 
 \begin{frame}{Problemas Actuales}
+    \begin{itemize}
+        \item MVC tanto en el cliente como el servidor
+        \item Validaciones
+        \item Context Switch entre lenguajes
+    \end{itemize}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{img/problemas.png}
+    \end{center}
 \end{frame}
 
 \begin{frame}{Programación Web: Futuro}
@@ -102,6 +168,13 @@ Facundo Olano
 \begin{reference}{4mm}{13mm}
 ``Al buscar lo imposible el hombre siempre ha realizado y reconocido lo posible.'' Mijaíl Bakunin
 \end{reference}
+
+\begin{itemize}
+    \item Definir modelos una vez, utilizarlos en cualquier lugar
+    \item Validaciones definidas una vez
+    \item Métodos CRUD utilizados indistintamente en servidor y cliente
+    \item Soporte Realtime
+\end{itemize}
 
 \end{frame}
 
@@ -166,22 +239,127 @@ Facundo Olano
 ``There's only one trick in software, and that is using a piece of software that's already been written.'' Bill Gates
 \end{reference}
 
+\begin{center}
+    \includegraphics[width=\textwidth]{img/arq.png}
+\end{center}
+
+
 \end{frame}
 
-\begin{frame}{Modelos en Invisible.js}
+\begin{frame}[fragile]{Modelos en Invisible.js}
 
+\begin{columns}[t]
+
+\begin{column}{0.5\textwidth}
+\begin{lstlisting}
+class Person
+    getFullName()
+    getAvatarUrl()
+\end{lstlisting}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{lstlisting}
+class Person
+    getFullName()
+    getAvatarUrl()
+
+    save(cb)
+    delete(cb)
+    query(query, opts, cb)
+    findById(id, cb)
+
+    onNew(cb)
+    onUpdate(cb)
+    onDelete(cb)
+\end{lstlisting}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Modelos en Invisible.js (2)}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/secuencia.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Invisible.js en acción: Mensaje}
+\begin{reference}{4mm}{13mm}
+``Programming is usually taught by examples.'' Niklaus Wirth
+\end{reference}
+
+\texttt{models/message.coffee:}
+\begin{lstlisting}
+Invisible = require("invisible")
+
+class Message
+    constructor: (@from, @body) ->
+      @date = new Date()
+
+module.exports = Invisible.createModel("Message", Message)
+\end{lstlisting}
 
 \end{frame}
 
-\begin{frame}{Invisible.js en acción}
+\begin{frame}[fragile]{Invisible.js en acción: Usuario}
+\texttt{models/user.coffee:}
+\begin{lstlisting}
+crypto = require("crypto")
 
+SALT = "MY REALLY LONG HASH SALT"
+
+class User
+    constructor: (@email)->
+
+    setPassword: (plainPassword) ->
+        h = crypto.createHash('sha1')
+        h.update(plainPassword)
+        h.update(SALT)
+        @password = h.digest('base64')
+\end{lstlisting}
 \end{frame}
 
-\begin{frame}{Invisible.js en acción (2)}
+\begin{frame}[fragile]{Invisible.js en acción: Validaciones}
+\texttt{models/user.coffee:}
+\begin{lstlisting}
+validations: { methods: ['checkUnique'] }
 
+checkUnique: (done) ->
+    Invisible.User.query {email: @email}, (err, res) ->
+        if res.length == 1
+            done({valid : false, errors: ["email already registered"]})
+        else if res.length == 0
+            done({valid : true})
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Invisible.js en acción: Configuración}
+\texttt{app.coffee:}
+\begin{lstlisting}
+invisible = require("invisible")
+express = require("express")
+app = express()
+
+# Express middleware
+
+invisible.createServer app, "models", () ->
+  console.log("Invisible server listening on port " + app.get("port"))
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Invisible.js en acción: Configuración (2)}
+\texttt{public/index.html:}
+\begin{lstlisting}[language=html]
+<html>
+    <body>
+        <script src="invisible.js"></script>
+        <script type="text/javascript">
+            var message = new Invisible.Message()
+            console.log(message.date)
+        </script>
+    </body>
+</html>
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}{Demo}
@@ -192,20 +370,55 @@ Facundo Olano
 
 \begin{frame}{Conclusiones}
 \begin{itemize}
-    \item Desarrollo integral de un producto
-    \item Objetivos cumplidos
-    \item Sencillez y velocidad de trabajo
+    \item Se realizó un trabajo integral de Ingeniería de Software.
+    \item Se obtuvo un framework útil, sencillo de utilizar, y con potencial de desarrollo.
+    \item Se cumplieron los objetivos del proyecto y se superaron las expectativas iniciales.
 \end{itemize}
-\pause
+\end{frame}
 
-Trabajo futuro:
-\begin{itemize}
-    \item Seguridad
-    \item Escalabilidad
-    \item Desarrollo comunitario
-\end{itemize}
+\begin{frame}{Repercusiones}
+\begin{reference}{4mm}{13mm}
+``The secret of politics? Make a good treaty with Russia.'' Otto von Bismarck
+\end{reference}
+
+\begin{columns}[t]
+
+\begin{column}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/github.png}
+    \end{center}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/rusia.png}
+    \end{center}
+\end{column}
+\end{columns}
 
 
 \end{frame}
+
+\begin{frame}{Trabajo futuro}
+\begin{itemize}
+    \item Implementar módulo de seguridad
+    \item Evaluar escalabilidad
+    \item Incentivar el desarrollo comunitario
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[c]{Preguntas}
+\begin{reference}{4mm}{13mm}
+``El artista es el ingeniero del alma humana.'' Iósif Stalin
+\end{reference}
+\Huge Preguntas?
+\end{frame}
+
+% \begin{frame}{Agradecimientos}
+% \begin{reference}{4mm}{13mm}
+% ``Si he logrado ver más lejos, ha sido porque he subido a hombros de gigantes.'' Isaac Newton
+% \end{reference}
+% \end{frame}
 
 \end{document}

@@ -77,17 +77,17 @@ Facundo Olano
 
 
 \begin{frame}{Programación Web: Prehistoria}
-    \begin{columns}
-        \begin{column}{0.4\textwidth}
+    \begin{columns}[c]
+        \begin{column}{0.5\textwidth}
             \begin{itemize}
                 \item Páginas estáticas
                 \item CGI Scripts
                 \item Aplicaciones tradicionales (Java, PHP)
             \end{itemize}
         \end{column}
-        \begin{column}{0.6\textwidth}
+        \begin{column}{0.5\textwidth}
             \begin{center}
-                \includegraphics[width=\textwidth]{img/prehistoria.png}
+                \includegraphics[width=\textwidth]{img/prehistoria2.png}
             \end{center}
         \end{column}
     \end{columns}
@@ -95,10 +95,10 @@ Facundo Olano
 
 
 \begin{frame}{Programación Web: Historia}
-    \begin{columns}
+    \begin{columns}[c]
         \begin{column}{0.5\textwidth}
             \begin{center}
-                \includegraphics[width=\textwidth]{img/historia.png}
+                \includegraphics[width=\textwidth]{img/historia2.png}
             \end{center}
         \end{column}
         \begin{column}{0.5\textwidth}
@@ -114,17 +114,17 @@ Facundo Olano
 
 \begin{frame}{Programación Web: Actualidad}
 
-\begin{columns}
-    \begin{column}{0.4\textwidth}
+\begin{columns}[c]
+    \begin{column}{0.5\textwidth}
         \begin{itemize}
             \item HTML5, Realtime
             \item Backbone
             \item MVVM: Knockout, Angular
         \end{itemize}
     \end{column}
-    \begin{column}{0.6\textwidth}
+    \begin{column}{0.5\textwidth}
         \begin{center}
-            \includegraphics[width=\textwidth]{img/actualidad.png}
+            \includegraphics[width=\textwidth]{img/actualidad2.png}
         \end{center}
     \end{column}
 \end{columns}
@@ -132,10 +132,13 @@ Facundo Olano
 \end{frame}
 
 \begin{frame}{Problemas Actuales}
+\begin{reference}{4mm}{85mm}
+``Pocas veces pensamos en lo que tenemos; pero siempre en lo que nos falta.'' Jorge Luis Borges
+\end{reference}
     \begin{itemize}
-        \item MVC tanto en el cliente como el servidor
-        \item Validaciones
-        \item Context Switch entre lenguajes
+        \item Duplicación de modelos
+        \item Duplicación de validaciones
+        \item Constante cambio del lenguaje
     \end{itemize}
     \begin{center}
         \includegraphics[width=0.8\textwidth]{img/problemas.png}
@@ -165,7 +168,7 @@ Facundo Olano
 \end{frame}
 
 \begin{frame}{Nuestro objetivo}
-\begin{reference}{4mm}{13mm}
+\begin{reference}{4mm}{85mm}
 ``Al buscar lo imposible el hombre siempre ha realizado y reconocido lo posible.'' Mijaíl Bakunin
 \end{reference}
 
@@ -179,7 +182,7 @@ Facundo Olano
 \end{frame}
 
 \begin{frame}{Investigación}
-\begin{reference}{4mm}{85mm}
+\begin{reference}{4mm}{13mm}
 ``If you think it's simple, then you have misunderstood the problem.'' Bjarne Stroustrup
 \end{reference}
 
@@ -285,7 +288,7 @@ class Person
 
 \begin{frame}[fragile]{Invisible.js en acción: Mensaje}
 \begin{reference}{4mm}{13mm}
-``Programming is usually taught by examples.'' Niklaus Wirth
+``Talk is cheap. Show me the code.'' Linus Torvalds
 \end{reference}
 
 \texttt{models/message.coffee:}
@@ -320,6 +323,10 @@ class User
 \end{frame}
 
 \begin{frame}[fragile]{Invisible.js en acción: Validaciones}
+\begin{reference}{4mm}{13mm}
+``Programming is usually taught by examples.'' Niklaus Wirth
+\end{reference}
+
 \texttt{models/user.coffee:}
 \begin{lstlisting}
 validations: { methods: ['checkUnique'] }
@@ -409,16 +416,12 @@ invisible.createServer app, "models", () ->
 \end{frame}
 
 \begin{frame}[c]{Preguntas}
-\begin{reference}{4mm}{13mm}
-``El artista es el ingeniero del alma humana.'' Iósif Stalin
-\end{reference}
+% \begin{reference}{4mm}{13mm}
+% ``El artista es el ingeniero del alma humana.'' Iósif Stalin
+% \end{reference}
 \Huge Preguntas?
 \end{frame}
 
-% \begin{frame}{Agradecimientos}
-% \begin{reference}{4mm}{13mm}
-% ``Si he logrado ver más lejos, ha sido porque he subido a hombros de gigantes.'' Isaac Newton
-% \end{reference}
-% \end{frame}
+% cd
 
 \end{document}
